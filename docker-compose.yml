@@ -1,12 +1,17 @@
 services:
   backend:
+    environment:
+      FRONTEND_URL: "https://${CODESPACE_NAME}-3000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+      BACKEND_URL: "https://${CODESPACE_NAME}-4567.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
     build: ./backend
     ports:
-      - "8080:8080"
+      - "4567:4567"
     # volumes:
     #   - ./backend:/backend
 
   frontend:
+    environment:
+      BACKEND_URL: "https://${CODESPACE_NAME}-4567.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
     build: ./frontend
     ports:
       - "3000:3000"
