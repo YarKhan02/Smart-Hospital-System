@@ -6,6 +6,13 @@ cd /workspace
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
 
+<!-- i am user -->
+login root user
+create i am user
+add user into admin group
+give permissions to admin
+create access key
+
 <!-- aws configure -->
 
 <!-- setup environment variables -->

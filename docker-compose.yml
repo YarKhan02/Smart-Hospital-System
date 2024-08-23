@@ -6,8 +6,9 @@ services:
     build: ./backend
     ports:
       - "4567:4567"
-    # volumes:
-    #   - ./backend:/backend
+    volumes:
+      - ./backend:/backend
+    command: air
 
   frontend:
     environment:
@@ -15,5 +16,5 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
-    # volumes:
-    #   - ./frontend:/frontend
+    volumes:
+      - ./frontend:/frontend
