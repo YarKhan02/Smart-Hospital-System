@@ -9,7 +9,7 @@ import (
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode("wali")
+	json.NewEncoder(w).Encode("AMNA")
 }
 
 func main() {
