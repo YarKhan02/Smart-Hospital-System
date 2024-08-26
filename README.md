@@ -35,7 +35,3 @@ gp env AWS_ACCESS_KEY_ID=your_access_key_id
 gp env AWS_SECRET_ACCESS_KEY=your_secret_access_key
 gp env AWS_DEFAULT_REGION=us-west-2
 ```
-
-# Install the pgx library for connecting to PostgreSQL in Go
-go get github.com/jackc/pgx/v4
-
