@@ -2,61 +2,54 @@ package main
 
 import (
 	// "encoding/json"
-	"net/http"
+	// "context"
 	// "fmt"
+	// "log"
+	"time"
 	// "net/http"
+	// "github.com/jackc/pgx/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/YarKhan02/Smart-Hospital-System/backend/lib"
 )
-type Appointment struct {
-	UserName         string `json:"user_name"`
-	PhoneNumber      string `json:"phone_number"`
-	AppointmentNumber string `json:"appointment_number"`
-	DoctorName       string `json:"doctor_name"`
+
+type Schedule struct {
+	UUID                string    `json:"uuid"`
+	DoctorUUID          string    `json:"doctor_uuid"`
+	AppointmentStart    time.Time `json:"appointment_start"`
+	AppointmentEnd      time.Time `json:"appointment_end"`
+	CreatedAt           time.Time `json:"created_at"`
 }
 
-func fetch_data(c echo.Context, name string) error {
-	var data []Appointment
-	if name == "wali" {
-		// Sample data
-		data = []Appointment{
-			{
-				UserName:         "John Doe",
-				PhoneNumber:      "+1234567890",
-				AppointmentNumber: "A001",
-				DoctorName:       "Dr. Emily Smith",
-			},
-			{
-				UserName:         "Jane Smith",
-				PhoneNumber:      "+1987654321",
-				AppointmentNumber: "A002",
-				DoctorName:       "Dr. Michael Johnson",
-			},
-			{
-				UserName:         "Alice Johnson",
-				PhoneNumber:      "+1122334455",
-				AppointmentNumber: "A003",
-				DoctorName:       "Dr. Sarah Brown",
-			},
-		}
-		return c.JSON(http.StatusOK, data)
-	} else {
-		var response = map[string]string {
-			"message": "no data found",
-		}
-		return c.JSON(http.StatusNotFound, response)
-	}
+func fetchDoctors(c echo.Context) error {
+	return lib.fetchDoctors(c)
 }
 
-func reception(c echo.Context) error {
-	name := "walii"
-	result := fetch_data(c, name)
-	return result
-}
+// func fetchSchedule(c echo.Context) error {
+// 	db := connect_to_db()
+
+// 	rows, err := db.Query(context.Background(), "SELECT uuid, doctor_uuid, appointment_start, appointment_end, created_at FROM public.schedule")
+// 	if err != nil {
+// 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to fetch data"})
+// 	}
+// 	defer rows.Close()
+
+// 	schedule := []Schedule{}
+// 	for rows.Next() {
+// 		var s Schedule
+// 		err := rows.Scan(&s.UUID, &s.DoctorUUID, &s.AppointmentStart, &s.AppointmentEnd, &s.CreatedAt)
+// 		if err != nil {
+//             return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
+//         }
+// 		schedule = append(schedule, s)
+// 	}
+// 	return c.JSON(http.StatusOK, schedule)
+// }
 
 func main() {
 	app := echo.New()
 
-	app.GET("/", reception)
+	app.GET("/doctors", fetchDoctors)
+	// app.GET("/schedule", fetchSchedule)
 
 	app.Start(":4567")
 }
