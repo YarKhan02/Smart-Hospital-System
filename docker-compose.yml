@@ -3,6 +3,7 @@ services:
     environment:
       FRONTEND_URL: "https://${CODESPACE_NAME}-3000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
       BACKEND_URL: "https://${CODESPACE_NAME}-4567.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+      CONNECTION_URL: "postgresql://postgres:password@db:5432/smart_hospital_system"
     build: ./backend
     ports:
       - "4567:4567"
@@ -18,3 +19,18 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/frontend
+
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local

@@ -4,6 +4,7 @@ WORKDIR /backend
 
 # Install air
 RUN go install github.com/air-verse/air@latest
+RUN apk add --no-cache postgresql-client
 
 # Copy go.mod and go.sum
 COPY go.* ./
