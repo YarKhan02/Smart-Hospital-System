@@ -3,12 +3,12 @@
 
 CYAN='\033[1;36m'
 NO_COLOR='\033[0m'
-LABEL="db-session"
+LABEL="db-setup"
 printf "${CYAN}==== ${LABEL}${NO_COLOR}\n"
 
-bin_path="$(realpath .)/bin"
+utils_path="$(realpath .)/utils"
 
-source "$bin_path/db-drop"
-source "$bin_path/db-create"
-source "$bin_path/db-schema-load"
-source "$bin_path/db-seed"
+source "$utils_path/db-drop"
+source "$utils_path/db-create"
+source "$utils_path/db-schema-load"
+source "$utils_path/db-seed"
