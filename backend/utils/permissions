@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Navigate to the directory
+cd /workspace/Smart-Hospital-System/backend/utils
+
+# Give all permissions to all files in the directory
+chmod +x db-connect db-create db-drop db-schema-load db-seed db-setup
+
+# Verify permissions
+ls -l
