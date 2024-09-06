@@ -35,3 +35,22 @@ gp env AWS_ACCESS_KEY_ID=your_access_key_id
 gp env AWS_SECRET_ACCESS_KEY=your_secret_access_key
 gp env AWS_DEFAULT_REGION=us-west-2
 ```
+
+
+# Project Setup
+
+# Install dependencies
+npm install
+
+# If TypeScript and React are not installed, add them
+npm install typescript @types/react @types/react-dom --save-dev
+
+# Initialize TypeScript
+npx tsc --init
+
+## Install Dependencies
+
+To set up the project, run the following command to install the required dependencies:
+
+```bash
+npm install tailwindcss@latest clsx tailwind-merge framer-motion

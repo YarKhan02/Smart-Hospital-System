@@ -1,0 +1,11 @@
+/* src/components/Sidebar.css */
+.sidebar {
+    width: 240px; /* Adjust as needed */
+    background-color: #f4f4f4; /* Adjust as needed */
+    height: 100%; /* Full height */
+    position: fixed; /* Fixed position on the left side */
+    top: 60px; /* Match the Topbar height */
+    left: 0;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+  }
+  
