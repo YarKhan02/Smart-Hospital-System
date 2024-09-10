@@ -5,6 +5,7 @@ import './App.css';
 
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
+import Schedules from './pages/Schedules'
 
 // Create router configuration
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Dashboard />,
+  },
+  {
+    path: '/schedules',
+    element: <Schedules />,
   }
 ]);
 

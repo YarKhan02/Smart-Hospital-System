@@ -32,7 +32,7 @@ func main() {
     }))
 
 	app.GET("/doctors", fetchDoctors)
-	app.GET("/schedule", fetchSchedule)
+	app.GET("/schedules", fetchSchedule)
 	app.GET("/users", fetchUsers)
 	app.GET("/appointments", fetchAppointments)
 
