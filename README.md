@@ -39,13 +39,13 @@ gp env AWS_DEFAULT_REGION=us-west-2
 
 # Project Setup
 
-# Install dependencies
+## Install dependencies
 npm install
 
-# If TypeScript and React are not installed, add them
+## If TypeScript and React are not installed, add them
 npm install typescript @types/react @types/react-dom --save-dev
 
-# Initialize TypeScript
+## Initialize TypeScript
 npx tsc --init
 
 ## Install Dependencies
