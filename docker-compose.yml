@@ -19,6 +19,7 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/frontend
+      - ./tsconfig.json:/app/tsconfig.json
 
   db:
     image: postgres:13-alpine

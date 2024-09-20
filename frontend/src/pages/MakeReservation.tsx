@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "../components/button"
+import { Input } from "../components/input"
+import { Label } from "../components/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/select"
 
 interface Doctor {
   id: number;
