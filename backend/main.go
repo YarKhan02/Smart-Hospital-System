@@ -11,7 +11,7 @@ func fetchDoctors(c echo.Context) error {
 }
 
 func fetchSchedule(c echo.Context) error {
-	return services.FetchSchedule(c)
+	return services.FetchSchedules(c)
 }
 
 func fetchUsers(c echo.Context) error {

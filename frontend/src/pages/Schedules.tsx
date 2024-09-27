@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/card"
 import { Calendar } from "../components/calendar"
 import { Button } from "../components/button"
 import { Clock, Menu, CalendarDays, User, Users } from 'lucide-react'
+import { format, isSameDay } from 'date-fns'
 
 const navItems = [
   { href: "/appointments", label: "Appointments", icon: CalendarDays },
@@ -12,15 +13,47 @@ const navItems = [
   { href: "/reservations", label: "Make Reservation", icon: CalendarDays },
 ]
 
-const appointments = [
-  { time: "9:00 AM", doctor: "Dr. Smith", specialty: "Cardiology" },
-  { time: "11:00 AM", doctor: "Dr. Johnson", specialty: "Pediatrics" },
-  { time: "2:00 PM", doctor: "Dr. Williams", specialty: "Neurology" },
-]
+type Appointment = {
+  doctor_uuid: string;
+  speciality: string
+  appointment_start: string;
+  appointment_end: string;
+};
 
 export default function Schedules() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [appointments, setAppointments] = useState<Appointment[]>([])
+
+  const loadData = async () => {
+    try {
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/schedules`
+      const res = await fetch(backend_url);
+      let resJson = await res.json();
+      if (res.status === 200) {
+        setAppointments(resJson)
+      } else {
+        console.log(res)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [])
+
+  const filteredAppointments = appointments.filter(appointment => 
+    selectedDate && isSameDay(new Date(appointment.appointment_start), selectedDate)
+  );
+
+  const normalizedAppointments = filteredAppointments.map((appointment) => ({
+    doctor_uuid: appointment.doctor_uuid,
+    speciality: appointment.speciality,
+    appointment_start: format(new Date(appointment.appointment_start), 'Pp'),
+    appointment_end: format(new Date(appointment.appointment_end), 'Pp')
+  }));
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -64,14 +97,18 @@ export default function Schedules() {
               />
               <div className="flex-1">
                 <h3 className="text-lg font-semibold mb-2">Appointments for {selectedDate?.toDateString()}</h3>
-                <ul className="space-y-2">
-                  {appointments.map((appointment, index) => (
-                    <li key={index} className="flex items-center">
-                      <Clock className="mr-2 h-4 w-4" />
-                      <span>{appointment.time} - {appointment.doctor} ({appointment.specialty})</span>
-                    </li>
-                  ))}
-                </ul>
+                {normalizedAppointments.length > 0 ? (
+                  <ul className="space-y-2">
+                    {normalizedAppointments.map((appointment, index) => (
+                      <li key={index} className="flex items-center">
+                        <Clock className="mr-2 h-4 w-4" />
+                        <span>{appointment.doctor_uuid} ({appointment.speciality}) - {appointment.appointment_start} to {appointment.appointment_end}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No appointments scheduled for this date.</p>
+                )}
               </div>
             </div>
           </CardContent>

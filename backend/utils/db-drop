@@ -14,5 +14,5 @@ DB_NAME="smart_hospital_system"
 # Update connection URL
 NO_DB_CONNECTION_URL="postgresql://$DB_USER:password@$DB_HOST:$DB_PORT"
 
-# Create database
+# Drop database
 psql "$NO_DB_CONNECTION_URL" -c "DROP DATABASE $DB_NAME"

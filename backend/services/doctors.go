@@ -20,7 +20,7 @@ func FetchDoctors(c echo.Context) error {
 	db := lib.ConnectToDB()
     defer db.Close(context.Background())
 
-    rows, err := db.Query(context.Background(), "SELECT uuid, display_name, speciality, contact_info, joined_at FROM public.doctors")
+    rows, err := db.Query(context.Background(), "SELECT uuid, doctor_name, speciality, contact_info, joined_at FROM public.doctors")
     if err != nil {
         return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to fetch data"})
     }
