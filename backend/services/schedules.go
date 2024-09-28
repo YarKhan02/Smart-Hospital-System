@@ -10,7 +10,7 @@ import (
 )
 
 type Schedule struct {
-	DoctorUUID       string    `json:"doctor_uuid"`
+	DoctorName       string    `json:"doctor_name"`
 	Speciality       string	   `json:"speciality"`
 	AppointmentStart time.Time `json:"appointment_start"`
 	AppointmentEnd   time.Time `json:"appointment_end"`
@@ -31,7 +31,7 @@ func FetchSchedules(c echo.Context) error {
 	schedule := []Schedule{}
 	for rows.Next() {
 		var s Schedule
-		err := rows.Scan(&s.DoctorUUID, &s.Speciality, &s.AppointmentStart, &s.AppointmentEnd)
+		err := rows.Scan(&s.DoctorName, &s.Speciality, &s.AppointmentStart, &s.AppointmentEnd)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
 		}

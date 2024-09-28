@@ -11,6 +11,7 @@ import Doctors from './pages/Doctors'
 import UserRecords from './pages/UserRecords'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import Reservation from './pages/Reservation'
 
 import { Amplify } from 'aws-amplify'
 
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup />
+  },
+  {
+    path: '/reservation',
+    element: <Reservation />
   }
 ]);
 

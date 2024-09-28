@@ -45,16 +45,14 @@ VALUES
 
 
 -- Insert test data into the users table
-INSERT INTO public.users (user_name, nic, phone_number)
-VALUES 
+INSERT INTO public.users (user_name, nic, phone_number) VALUES 
 ('Alice Johnson', 'NIC123456', 5551234567),
 ('Bob Williams', 'NIC987654', 5559876543),
 ('Charlie Davis', 'NIC456789', 5554567890);
 
 -- Insert test data into the appointments table
--- INSERT INTO public.appointments (user_uuid, schedule_uuid)
--- VALUES 
--- ((SELECT uuid FROM public.users WHERE user_name = 'Alice Johnson'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'))),
--- ((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
--- ((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
--- ((SELECT uuid FROM public.users WHERE user_name = 'Charlie Davis'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris')));
+INSERT INTO public.appointments (user_uuid, schedule_uuid) VALUES 
+((SELECT uuid FROM public.users WHERE user_name = 'Alice Johnson'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'))),
+((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
+((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
+((SELECT uuid FROM public.users WHERE user_name = 'Charlie Davis'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris')));

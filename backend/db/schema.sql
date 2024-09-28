@@ -20,6 +20,7 @@ CREATE TABLE public.schedules (
   doctor_uuid UUID NOT NULL,
   appointment_start TIMESTAMP NOT NULL,
   appointment_end TIMESTAMP NOT NULL,
+  status TEXT DEFAULT 'Available',
   created_at TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
   CONSTRAINT fk_doctor FOREIGN KEY (doctor_uuid) REFERENCES public.doctors (uuid) ON DELETE CASCADE
@@ -39,13 +40,7 @@ CREATE TABLE public.appointments (
   user_uuid UUID NOT NULL,
   schedule_uuid UUID NOT NULL,
 
-  CONSTRAINT fk_user
-    FOREIGN KEY (user_uuid)
-    REFERENCES public.users (uuid)
-    ON DELETE CASCADE,
+  CONSTRAINT fk_user FOREIGN KEY (user_uuid) REFERENCES public.users (uuid) ON DELETE CASCADE,
 
-  CONSTRAINT fk_schedule
-    FOREIGN KEY (schedule_uuid)
-    REFERENCES public.schedules (uuid)
-    ON DELETE CASCADE
+  CONSTRAINT fk_schedule FOREIGN KEY (schedule_uuid) REFERENCES public.schedules (uuid) ON DELETE CASCADE
 );
