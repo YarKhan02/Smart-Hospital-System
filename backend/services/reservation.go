@@ -10,11 +10,11 @@ type Reservation struct {
     PatientName     string `json:"patientName" form:"patientName"`
     PatientEmail    string `json:"patientEmail" form:"patientEmail"`
     PatientPhone    string `json:"patientPhone" form:"patientPhone"`
-    AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
-    DoctorName      string `json:"doctor_name" form:"doctor_name"`
+//  AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
+    DoctorName      string `json:"doctorName" form:"doctorName"`
     Speciality      string `json:"speciality" form:"speciality"`
-    AppointmentStart string `json:"appointment_start" form:"appointment_start"`
-    AppointmentEnd   string `json:"appointment_end" form:"appointment_end"`
+    AppointmentStart string `json:"appointmentStart" form:"appointmentStart"`
+    AppointmentEnd   string `json:"appointmentEnd" form:"appointmentEnd"`
 }
 
 func PostReservation(c echo.Context) error {

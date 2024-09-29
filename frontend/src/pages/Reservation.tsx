@@ -65,7 +65,7 @@ export default function Reservation() {
           appointmentEnd,
         }),
       });
-
+      
       // Check if the response is okay
       if (!response.ok) {
         throw new Error('Failed to make reservation');

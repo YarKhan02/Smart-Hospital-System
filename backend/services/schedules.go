@@ -12,6 +12,7 @@ import (
 type Schedule struct {
 	DoctorName       string    `json:"doctor_name"`
 	Speciality       string	   `json:"speciality"`
+	AppointmentDate  string    `json:"appoinment_date"`
 	AppointmentStart time.Time `json:"appointment_start"`
 	AppointmentEnd   time.Time `json:"appointment_end"`
 }
@@ -35,6 +36,12 @@ func FetchSchedules(c echo.Context) error {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
 		}
+
+		s.AppointmentDate = appointmentStart.Format("01/02/2006") 
+		s.AppointmentStart = appointmentStart.Format("3:04 PM") 
+		s.AppointmentEND = appointmentEND.Format("3:04 PM") 
+
+
 		schedule = append(schedule, s)
 	}
 	return c.JSON(http.StatusOK, schedule)

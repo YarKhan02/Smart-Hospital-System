@@ -50,10 +50,11 @@ export default function Schedules() {
   const normalizedAppointments = filteredAppointments.map((appointment) => ({
     doctor_name: appointment.doctor_name,
     speciality: appointment.speciality,
-    appointment_start: format(new Date(appointment.appointment_start), 'Pp'),
-    appointment_end: format(new Date(appointment.appointment_end), 'Pp')
+    appointment_date: format(new Date(appointment.appointment_start), 'MM/dd/yyyy'),  // Date in MM/DD/YYYY format
+    appointment_start: format(new Date(appointment.appointment_start), 'p'),  // Time in HH:MM AM/PM format
+    appointment_end: format(new Date(appointment.appointment_end), 'p'),      // Time in HH:MM AM/PM format
   }));
-
+  
   const handleReserve = (appointment: Appointment) => {
     const query = new URLSearchParams({
       doctor_name: appointment.doctor_name,
@@ -102,7 +103,7 @@ export default function Schedules() {
             <CardDescription>View and manage doctor schedules</CardDescription>
           </CardHeader>
           <CardContent>
-          <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2">
                 <Search className="w-5 h-5 text-gray-500" />
                 <Input
@@ -113,41 +114,44 @@ export default function Schedules() {
                   className="flex-grow"
                 />
               </div>
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                className="rounded-md border"
-              />
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold mb-2">Schedules for {selectedDate?.toDateString()}</h3>
-                {normalizedAppointments.length > 0 ? (
-                  <ul className="space-y-2">
-                    {normalizedAppointments.map((appointment, index) => (
-                      <li key={index} className="flex items-center">
-                        <div>
+              <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  className="rounded-md border"
+                />
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold mb-2">Schedules for {selectedDate?.toDateString()}</h3>
+                  {normalizedAppointments.length > 0 ? (
+                    <ul className="space-y-4"> {/* Increased space between appointments */}
+                      {normalizedAppointments.map((appointment, index) => (
+                        <li key={index} className="flex justify-between items-start p-4 border-b border-gray-200"> {/* Added padding and border for separation */}
+                          <div className="flex flex-col" text-left> {/* Stack doctor info vertically */}
                             <p className="font-semibold">{appointment.doctor_name} ({appointment.speciality})</p>
                             <p className="text-sm text-gray-600">
-                              <Clock className="inline-block mr-1 h-4 w-4" />
-                              {appointment.appointment_start} to {appointment.appointment_end}
+                              <span>Date: {appointment.appointment_date}</span>
+                              <span className="block">
+                                <Clock className="inline-block mr-1 h-4 w-4" />
+                                {appointment.appointment_start} to {appointment.appointment_end}
+                              </span>
                             </p>
-                        </div>
-                        <Button onClick={() => handleReserve(appointment)}>
-                          Reserve
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No appointments scheduled for this date.</p>
-                )}
+                          </div>
+                          <Button onClick={() => handleReserve(appointment)} className="ml-4"> {/* Added margin to separate button */}
+                            Reserve
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No appointments scheduled for this date.</p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
           </CardContent>
         </Card>
       </main>
     </div>
-  )
+  );
 }
