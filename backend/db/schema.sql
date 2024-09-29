@@ -1,9 +1,11 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 DROP TABLE IF EXISTS public.doctors;
+DROP TABLE IF EXISTS public.patients;
 DROP TABLE IF EXISTS public.schedules;
 DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.appointments;
+
 
 -- DOCTORS TABLE
 CREATE TABLE public.doctors (
@@ -12,6 +14,16 @@ CREATE TABLE public.doctors (
   speciality TEXT NOT NULL,
   contact_info BIGINT DEFAULT 0,
   joined_at TIMESTAMP default current_timestamp NOT NULL
+);
+
+-- PATIENT TABLE 
+CREATE TABLE public.patients (
+
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  patient_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  date_of_birth DATE NOT NULL,
+  phone_number BIGINT DEFAULT 0
 );
 
 -- SCHEDULE TABLE
