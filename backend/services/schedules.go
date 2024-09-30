@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
+	
 	"net/http"
-	"time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
 	"github.com/labstack/echo/v4"
@@ -13,8 +13,8 @@ type Schedule struct {
 	DoctorName       string    `json:"doctor_name"`
 	Speciality       string	   `json:"speciality"`
 	AppointmentDate  string    `json:"appoinment_date"`
-	AppointmentStart time.Time `json:"appointment_start"`
-	AppointmentEnd   time.Time `json:"appointment_end"`
+	AppointmentTimeStart string `json:"appointment_time_start"`
+	AppointmentTimeEnd   string `json:"appointment_time_end"`
 }
 
 func FetchSchedules(c echo.Context) error {
@@ -32,16 +32,14 @@ func FetchSchedules(c echo.Context) error {
 	schedule := []Schedule{}
 	for rows.Next() {
 		var s Schedule
-		err := rows.Scan(&s.DoctorName, &s.Speciality, &s.AppointmentStart, &s.AppointmentEnd)
+
+		err := rows.Scan(&s.DoctorName, &s.Speciality, &s.AppointmentDate, &s.AppointmentTimeStart, &s.AppointmentTimeEnd )
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
 		}
-
-		s.AppointmentDate = AppointmentStart.Format("01/02/2006") 
-		s.AppointmentStart = AppointmentStart.Format("3:04 PM") 
-		s.AppointmentEND = AppointmentEnd.Format("3:04 PM") 
 
 		schedule = append(schedule, s)
 	}
 	return c.JSON(http.StatusOK, schedule)
 }
+

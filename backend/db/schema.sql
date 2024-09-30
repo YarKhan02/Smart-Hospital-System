@@ -19,17 +19,18 @@ CREATE TABLE public.doctors (
 -- PATIENT TABLE 
 CREATE TABLE public.patients (
     uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    patient_name VARCHAR(255) NOT NULL,
-    patient_email VARCHAR(255) UNIQUE NOT NULL,
-    patient_phone VARCHAR(15) NOT NULL
+    patient_name TEXT(255) NOT NULL,
+    patient_email TEXT(255) UNIQUE NOT NULL,
+    patient_phone TEXT(15) NOT NULL
 );
 
 -- SCHEDULE TABLE
 CREATE TABLE public.schedules (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   doctor_uuid UUID NOT NULL,
-  appointment_start TIMESTAMP NOT NULL,
-  appointment_end TIMESTAMP NOT NULL,
+  appoinment_date DATE NOT NULL,
+  appointment_time_start TIME NOT NULL,
+  appointment_time_end TIME NOT NULL,
   status TEXT DEFAULT 'Available',
   created_at TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
