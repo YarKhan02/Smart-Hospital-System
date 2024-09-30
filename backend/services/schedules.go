@@ -37,10 +37,9 @@ func FetchSchedules(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
 		}
 
-		s.AppointmentDate = appointmentStart.Format("01/02/2006") 
-		s.AppointmentStart = appointmentStart.Format("3:04 PM") 
-		s.AppointmentEND = appointmentEND.Format("3:04 PM") 
-
+		s.AppointmentDate = AppointmentStart.Format("01/02/2006") 
+		s.AppointmentStart = AppointmentStart.Format("3:04 PM") 
+		s.AppointmentEND = AppointmentEnd.Format("3:04 PM") 
 
 		schedule = append(schedule, s)
 	}

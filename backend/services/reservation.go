@@ -10,7 +10,7 @@ import (
 
 type Reservation struct {
     PatientName     string `json:"patientName" form:"patientName"`
-    PatientNIC      string `json:"patientNIC" form:"patientNIC"`
+    PatientEmail    string `json:"patientEmail" form:"patientEmail"`
     PatientPhone    string `json:"patientPhone" form:"patientPhone"`
 //  AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
     DoctorName      string `json:"doctorName" form:"doctorName"`
@@ -32,7 +32,7 @@ func PostReservation(c echo.Context) error {
 
     sql := lib.Template("addPatientDuringReservation")
 
-    row := db.QueryRow(context.Background(), sql, reservation.PatientName, reservation.PatientPhone, reservation.NIC)
+    row := db.QueryRow(context.Background(), sql, reservation.PatientName, reservation.PatientPhone, reservation.PatientEmail)
     
     var patientUUID string
     err := row.Scan(&patientUUID)

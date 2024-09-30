@@ -20,7 +20,7 @@ CREATE TABLE public.doctors (
 CREATE TABLE public.patients (
     uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     patient_name VARCHAR(255) NOT NULL,
-    patient_NIC VARCHAR(13) UNIQUE NOT NULL,
+    patient_email VARCHAR(255) UNIQUE NOT NULL,
     patient_phone VARCHAR(15) NOT NULL
 );
 
@@ -34,14 +34,6 @@ CREATE TABLE public.schedules (
   created_at TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
   CONSTRAINT fk_doctor FOREIGN KEY (doctor_uuid) REFERENCES public.doctors (uuid) ON DELETE CASCADE
-);
-
--- USRERS TABLE
-CREATE TABLE public.users (
-  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_name TEXT NOT NULL,
-  nic TEXT NOT NULL,
-  phone_number BIGINT
 );
 
 -- APPOINTMENTS TABLE
