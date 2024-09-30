@@ -18,12 +18,10 @@ CREATE TABLE public.doctors (
 
 -- PATIENT TABLE 
 CREATE TABLE public.patients (
-
-  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  patient_name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  date_of_birth DATE NOT NULL,
-  phone_number BIGINT DEFAULT 0
+    uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    patient_name VARCHAR(255) NOT NULL,
+    patient_NIC VARCHAR(13) UNIQUE NOT NULL,
+    patient_phone VARCHAR(15) NOT NULL
 );
 
 -- SCHEDULE TABLE
