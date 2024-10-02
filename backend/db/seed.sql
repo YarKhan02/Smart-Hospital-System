@@ -13,12 +13,12 @@ INSERT INTO public.doctors (doctor_name, speciality, contact_info) VALUES
 
 -- Insert initial data into patients table
 INSERT INTO public.patients (patient_name, patient_email, patient_phone) VALUES
-('John Doe', 'johndoe@gmail.com', '1234567890'),
-('Jane Doe', 'janedoe@gmail.com', '0987654321');
+('John Doe', 'johndoe@gmail.com', 1234567890),
+('Jane Smith', 'janedoe@gmail.com', 0987654321);
 
 
 -- Insert test data into the schedule table
-INSERT INTO public.schedules (doctor_uuid, appointment_date, appointment_time_start, appointment_time_end)
+INSERT INTO public.schedules (doctor_uuid, appointment_date, appointment_start, appointment_end)
 VALUES 
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. John Smith'), '2024-09-01', '09:00:00', '09:30:00'),
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'), '2024-09-01', '10:00:00', '10:30:00'),
@@ -49,15 +49,9 @@ VALUES
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-09-09', '11:00:00', '11:30:00');
 
 
--- Insert test data into the users table
-INSERT INTO public.users (user_name, nic, phone_number) VALUES 
-('Alice Johnson', 'NIC123456', 5551234567),
-('Bob Williams', 'NIC987654', 5559876543),
-('Charlie Davis', 'NIC456789', 5554567890);
-
 -- Insert test data into the appointments table
-INSERT INTO public.appointments (user_uuid, schedule_uuid) VALUES 
-((SELECT uuid FROM public.users WHERE user_name = 'Alice Johnson'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'))),
-((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
-((SELECT uuid FROM public.users WHERE user_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
-((SELECT uuid FROM public.users WHERE user_name = 'Charlie Davis'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris')));
+INSERT INTO public.appointments (patient_uuid, schedule_uuid) VALUES 
+((SELECT uuid FROM public.patients WHERE patient_name = 'Alice Johnson'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'))),
+((SELECT uuid FROM public.patients WHERE patient_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
+((SELECT uuid FROM public.patients WHERE patient_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
+((SELECT uuid FROM public.patients WHERE patient_name = 'Charlie Davis'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris')));

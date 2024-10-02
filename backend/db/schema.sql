@@ -19,18 +19,18 @@ CREATE TABLE public.doctors (
 -- PATIENT TABLE 
 CREATE TABLE public.patients (
     uuid UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    patient_name TEXT(255) NOT NULL,
-    patient_email TEXT(255) UNIQUE NOT NULL,
-    patient_phone TEXT(15) NOT NULL
+    patient_name TEXT NOT NULL,
+    patient_email TEXT UNIQUE NOT NULL,
+    patient_phone INTEGER NOT NULL
 );
 
 -- SCHEDULE TABLE
 CREATE TABLE public.schedules (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   doctor_uuid UUID NOT NULL,
-  appoinment_date DATE NOT NULL,
-  appointment_time_start TIME NOT NULL,
-  appointment_time_end TIME NOT NULL,
+  appointment_date DATE NOT NULL,
+  appointment_start TEXT NOT NULL,
+  appointment_end TEXT NOT NULL,
   status TEXT DEFAULT 'Available',
   created_at TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
@@ -40,10 +40,10 @@ CREATE TABLE public.schedules (
 -- APPOINTMENTS TABLE
 CREATE TABLE public.appointments (
   appointment_uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_uuid UUID NOT NULL,
+  patient_uuid UUID NOT NULL,
   schedule_uuid UUID NOT NULL,
 
-  CONSTRAINT fk_user FOREIGN KEY (user_uuid) REFERENCES public.users (uuid) ON DELETE CASCADE,
+  CONSTRAINT fk_patient FOREIGN KEY (patient_uuid) REFERENCES public.patients (uuid) ON DELETE CASCADE,
 
   CONSTRAINT fk_schedule FOREIGN KEY (schedule_uuid) REFERENCES public.schedules (uuid) ON DELETE CASCADE
 );

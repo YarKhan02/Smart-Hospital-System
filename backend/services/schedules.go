@@ -1,9 +1,10 @@
 package services
 
 import (
-	"context"
-	
-	"net/http"
+	// "context"
+	// "fmt"
+	"time"
+	// "net/http"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
 	"github.com/labstack/echo/v4"
@@ -12,34 +13,17 @@ import (
 type Schedule struct {
 	DoctorName       string    `json:"doctor_name"`
 	Speciality       string	   `json:"speciality"`
-	AppointmentDate  string    `json:"appoinment_date"`
-	AppointmentTimeStart string `json:"appointment_time_start"`
-	AppointmentTimeEnd   string `json:"appointment_time_end"`
+	AppointmentDate  time.Time    `json:"appoinment_date"`
+	AppointmentStart string `json:"appointment_start"`
+	AppointmentEnd   string `json:"appointment_end"`
 }
 
 func FetchSchedules(c echo.Context) error {
-	db := lib.ConnectToDB()
-	defer db.Close(context.Background())
-
-	sql := lib.Template("schedules")
-
-	rows, err := db.Query(context.Background(), sql)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to fetch data"})
-	}
-	defer rows.Close()
-
-	schedule := []Schedule{}
-	for rows.Next() {
-		var s Schedule
-
-		err := rows.Scan(&s.DoctorName, &s.Speciality, &s.AppointmentDate, &s.AppointmentTimeStart, &s.AppointmentTimeEnd )
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
-		}
-
-		schedule = append(schedule, s)
-	}
-	return c.JSON(http.StatusOK, schedule)
+	return lib.Query(c)
 }
 
+func query_schedules() {
+	sql := lib.Template("schedules")
+	var schedule Schedule
+	lib.Query(sql, &schedule)
+}
