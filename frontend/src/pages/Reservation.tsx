@@ -15,6 +15,7 @@ const navItems = [
 export default function Reservation() {
   const [doctorName, setDoctorName] = useState<string>('');
   const [speciality, setSpeciality] = useState<string>('');
+  const [appointmentDate, setAppointmentDate] = useState<string>('');
   const [appointmentStart, setAppointmentStart] = useState<string>('');
   const [appointmentEnd, setAppointmentEnd] = useState<string>('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -32,6 +33,7 @@ export default function Reservation() {
     const params = new URLSearchParams(window.location.search);
     setDoctorName(params.get('doctor_name') || '');
     setSpeciality(params.get('speciality') || '');
+    setAppointmentDate(params.get('appointment_date') || '');
     setAppointmentStart(params.get('appointment_start') || '');
     setAppointmentEnd(params.get('appointment_end') || '');
   }, []);
@@ -61,6 +63,7 @@ export default function Reservation() {
           ...formData,
           doctorName,
           speciality,
+          appointmentDate,
           appointmentStart,
           appointmentEnd,
         }),

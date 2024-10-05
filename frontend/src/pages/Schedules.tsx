@@ -15,7 +15,8 @@ const navItems = [
 
 type Appointment = {
   doctor_name: string;
-  speciality: string
+  speciality: string;
+  appointment_date: string;
   appointment_start: string;
   appointment_end: string;
 };
@@ -42,7 +43,7 @@ export default function Schedules() {
   };
 
   const filteredAppointments = appointments.filter(appointment => 
-    selectedDate && isSameDay(new Date(appointment.appointment_start), selectedDate) &&
+    selectedDate && isSameDay(new Date(appointment.appointment_date), selectedDate) &&
     (appointment.doctor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
      appointment.speciality.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -50,15 +51,16 @@ export default function Schedules() {
   const normalizedAppointments = filteredAppointments.map((appointment) => ({
     doctor_name: appointment.doctor_name,
     speciality: appointment.speciality,
-    appointment_date: format(new Date(appointment.appointment_start), 'MM/dd/yyyy'),  // Date in MM/DD/YYYY format
-    appointment_start: format(new Date(appointment.appointment_start), 'p'),  // Time in HH:MM AM/PM format
-    appointment_end: format(new Date(appointment.appointment_end), 'p'),      // Time in HH:MM AM/PM format
+    appointment_date: format(new Date(appointment.appointment_date), 'MM/dd/yyyy'),  // Date in MM/DD/YYYY format
+    appointment_start: format(new Date(`1970-01-01T${appointment.appointment_start}Z`), 'hh:mm a'),  // Time in HH:MM AM/PM format
+    appointment_end: format(new Date(`1970-01-01T${appointment.appointment_end}Z`), 'hh:mm a'),      // Time in HH:MM AM/PM format
   }));
   
   const handleReserve = (appointment: Appointment) => {
     const query = new URLSearchParams({
       doctor_name: appointment.doctor_name,
       speciality: appointment.speciality,
+      appointment_date: appointment.appointment_date,
       appointment_start: appointment.appointment_start,
       appointment_end: appointment.appointment_end,
     }).toString();

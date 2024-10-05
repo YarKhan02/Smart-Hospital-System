@@ -4,14 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/projectPath"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgx/v4"
-	"github.com/labstack/echo/v4"
 )
 
 var db dbConnection
@@ -50,35 +48,20 @@ func Template(args string) string {
 	return string(content)
 }
 
-func (db *dbConnection) query(sql string) error {
+func (db *dbConnection) query_object(sql string, result interface{}) error {
 	dbInit()
+	defer db.pool.Close(context.Background())
 
-	db.pool.Close(context.Background())
-
-
-	rows, err := db.pool.Query(context.Background(), sql)
+	err := pgxscan.Select(context.Background(), db.pool, result, sql)
 	if err != nil {
-		fmt.Println(err)
-		// return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to fetch data"})
-	}
-	defer rows.Close()
-
-	schedule := []Schedule{}
-	for rows.Next() {
-		var s Schedule
-
-		err := rows.Scan(&s.DoctorName, &s.Speciality, &s.AppointmentDate, &s.AppointmentStart, &s.AppointmentEnd)
-		if err != nil {
-			fmt.Println(err)
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to scan data"})
-		}
-
-		schedule = append(schedule, s)
+		return fmt.Errorf("error executing query: %v", err)
 	}
 
-	return c.JSON(http.StatusOK, schedule)
+	return nil
 }
 
-func Query(sql string, schedule *Schedule) error {
-	return db.query(sql)
+func (db *dbConnection) query_commit(sql string, )
+
+func QueryJson(sql string, result interface{}) error {
+	return db.query_object(sql, result)
 }
