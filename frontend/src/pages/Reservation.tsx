@@ -60,12 +60,18 @@ export default function Reservation() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          doctorName,
-          speciality,
-          appointmentDate,
-          appointmentStart,
-          appointmentEnd,
+          patient: {
+            patientName: formData.patientName,
+            patientEmail: formData.patientEmail,
+            patientPhone: formData.patientPhone,
+          },
+          reservation: {
+            doctorName: doctorName,
+            speciality: speciality,
+            appointmentDate: appointmentDate,
+            appointmentStart: appointmentStart,
+            appointmentEnd: appointmentEnd,
+          },
         }),
       });
       
@@ -176,6 +182,7 @@ export default function Reservation() {
                   <Clock className="h-4 w-4" />
                   <span>{appointmentStart} - {appointmentEnd}</span>
                 </div>
+                <p>Date: {appointmentDate}</p>
                 <p>Doctor: {doctorName}</p>
                 <p>Speciality: {speciality}</p>
               </div>

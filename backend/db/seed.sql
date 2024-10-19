@@ -47,11 +47,3 @@ VALUES
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'), '2024-09-09', '09:00:00', '09:30:00'),
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-09-09', '10:00:00', '10:30:00'),
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-09-09', '11:00:00', '11:30:00');
-
-
--- Insert test data into the appointments table
-INSERT INTO public.appointments (patient_uuid, schedule_uuid) VALUES 
-((SELECT uuid FROM public.patients WHERE patient_name = 'Alice Johnson'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'))),
-((SELECT uuid FROM public.patients WHERE patient_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
-((SELECT uuid FROM public.patients WHERE patient_name = 'Bob Williams'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'))),
-((SELECT uuid FROM public.patients WHERE patient_name = 'Charlie Davis'), (SELECT uuid FROM public.schedules WHERE doctor_uuid = (SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris')));

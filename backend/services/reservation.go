@@ -2,15 +2,17 @@ package services
 
 import (
 	"fmt"
-    "net/http"
-    "github.com/labstack/echo/v4"
-    "github.com/YarKhan02/Smart-Hospital-System/lib"
+	"net/http"
+	"time"
+
+	"github.com/YarKhan02/Smart-Hospital-System/lib"
+	"github.com/labstack/echo/v4"
 )
 
 type Reservation struct {
- 	AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
     DoctorName      string `json:"doctorName" form:"doctorName"`
     Speciality      string `json:"speciality" form:"speciality"`
+    AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
     AppointmentStart string `json:"appointmentStart" form:"appointmentStart"`
     AppointmentEnd   string `json:"appointmentEnd" form:"appointmentEnd"`
 }
@@ -19,6 +21,11 @@ type Patient struct {
     PatientName     string `json:"patientName" form:"patientName"`
     PatientEmail    string `json:"patientEmail" form:"patientEmail"`
     PatientPhone    string `json:"patientPhone" form:"patientPhone"`
+}
+
+type PatientReservation struct {
+    Patient Patient `json:"patient"`
+    Reservation Reservation `json:"reservation"`
 }
 
 type UUID struct {
@@ -43,7 +50,6 @@ func patientExists(email string) (string, bool) {
 
 func insertPatient(patient Patient) (string, error) {
     sql := lib.Template("patient")
-    fmt.Println(sql)
 
     params := []interface{}{
 		patient.PatientName,
@@ -52,35 +58,87 @@ func insertPatient(patient Patient) (string, error) {
 	}
     
     var uuid string 
-    uuid, err := lib.QueryCommit(sql, params)
+    uuid, err := lib.QueryCommit(sql, params, true)
 
     if err != nil {
-        return "", fmt.Errorf("query insetion failed!\n%w", err)
+        return "", fmt.Errorf("query insetion failed!%w", err)
     }
 
     return uuid, nil
 }
 
-func PostReservation(c echo.Context) error {
-    var patient Patient
+func fetchSchedulesUUID(reservation Reservation) (string, bool) {
+    sql := lib.Template("scheduleUUID")
 
-    if err := c.Bind(&patient); err != nil {
+    parsedDate, err := time.Parse("01/02/2006", reservation.AppointmentDate)
+    if err != nil {
+        fmt.Println("error parsing appointment date: ", err)
+    }
+
+    appointmentDate := parsedDate.Format("2006-02-01")
+
+    params := []interface{}{
+        reservation.DoctorName,
+        reservation.Speciality,
+        appointmentDate,
+        reservation.AppointmentStart,
+        reservation.AppointmentEnd,
+    }
+
+    var uuid UUID
+
+    err = lib.QueryObject(sql, &uuid, params)
+    if err != nil {
+        fmt.Println(err)
+    }
+    
+    if uuid.UUID != "" {
+        return uuid.UUID, true
+    } else {
+        return "", false
+    }
+}
+
+func insertAppointment(s_uuid string, p_uuid string) error {
+    sql := lib.Template("insertAppointment")
+
+    params := []interface{}{
+		p_uuid,
+        s_uuid,
+	}
+ 
+    _, err := lib.QueryCommit(sql, params, false)
+
+    if err != nil {
+        return fmt.Errorf("query insetion failed!%w", err)
+    }
+
+    return nil
+}
+
+func PostReservation(c echo.Context) error {
+    var data PatientReservation
+
+    if err := c.Bind(&data); err != nil {
         return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
     }
 
-	fmt.Printf("Received Reservation Data: %+v\n", patient)
-
-    uuid, isExists := patientExists(patient.PatientEmail)
+    s_uuid, _ := fetchSchedulesUUID(data.Reservation)
+    p_uuid, isExists := patientExists(data.Patient.PatientEmail)
 
     if !isExists {
-        uuid, err := insertPatient(patient)
+        uuid, err := insertPatient(data.Patient)
         fmt.Println(uuid)
         if err != nil {
             return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Reservation failed!"})
         }
     }
 
-    fmt.Println("uuid", uuid)
+    err := insertAppointment(s_uuid, p_uuid)
+
+    if err != nil {
+        return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Reservation failed!"})    
+    }
 
     return c.JSON(http.StatusOK, echo.Map{"message": "Reservation successful!"})
 }

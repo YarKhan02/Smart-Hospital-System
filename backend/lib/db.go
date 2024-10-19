@@ -74,17 +74,24 @@ func (db *dbConnection) query_object(sql string, result interface{}, params []in
 	return nil
 }
 
-func (db *dbConnection) query_commit(sql string, params []interface{}) (string, error) {
+func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUID bool) (string, error) {
 	dbInit()
 	defer db.pool.Close(context.Background())
 
-	var uuid string
-	err := db.pool.QueryRow(context.Background(), sql, params...).Scan(&uuid)
-	if err != nil {
-		return "", fmt.Errorf("error executing insert query: %v", err)
+	if returnUUID {
+		var uuid string
+		err := db.pool.QueryRow(context.Background(), sql, params...).Scan(&uuid)
+		if err != nil {
+			return "", fmt.Errorf("error executing insert query: %v", err)
+		}
+		return uuid, nil
+	} else {
+		_, err := db.pool.Exec(context.Background(), sql, params...)
+		if err != nil {
+			return "", fmt.Errorf("error executing insert query: %v", err)
+		}
+		return "", nil
 	}
-
-	return uuid, nil
 }
 
 func QueryJson(sql string, result interface{}) error {
@@ -95,6 +102,6 @@ func QueryObject(sql string, result interface{}, params []interface{}) error {
 	return db.query_object(sql, result, params)
 }
 
-func QueryCommit(sql string, params []interface{}) (string, error) {
-	return db.query_commit(sql, params)
+func QueryCommit(sql string, params []interface{}, returnUUID bool) (string, error) {
+	return db.query_commit(sql, params, returnUUID)
 }
