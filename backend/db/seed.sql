@@ -13,8 +13,8 @@ INSERT INTO public.doctors (doctor_name, speciality, contact_info) VALUES
 
 -- Insert initial data into patients table
 INSERT INTO public.patients (patient_name, patient_email, patient_phone) VALUES
-('John Doe', 'johndoe@gmail.com', 1234567890),
-('Jane Smith', 'janedoe@gmail.com', 0987654321);
+('John Doe', 'johndoe@gmail.com', '1234567890'),
+('Jane Smith', 'janedoe@gmail.com', '0987654321');
 
 
 -- Insert test data into the schedule table

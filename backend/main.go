@@ -26,6 +26,10 @@ func postReservation(c echo.Context) error {
 	return services.PostReservation(c)
 }
 
+func fetchPateints(c echo.Context) error {
+	return services.FetchPatients(c)
+}
+
 func main() {
 	app := echo.New()
 
@@ -37,6 +41,7 @@ func main() {
 
 	// app.GET("/doctors", fetchDoctors)
 	app.GET("/schedules", fetchSchedule)
+	app.GET("/patients", fetchPateints)
 	// app.GET("/users", fetchUsers)
 	// app.GET("/appointments", fetchAppointments)
 	app.POST("/reservation", postReservation)

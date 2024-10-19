@@ -48,7 +48,7 @@ func Template(args string) string {
 	return string(content)
 }
 
-func (db *dbConnection) query_object(sql string, result interface{}) error {
+func (db *dbConnection) query_array(sql string, result interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
 
@@ -60,8 +60,41 @@ func (db *dbConnection) query_object(sql string, result interface{}) error {
 	return nil
 }
 
-func (db *dbConnection) query_commit(sql string, )
+func (db *dbConnection) query_object(sql string, result interface{}, params []interface{}) error {
+	dbInit()
+	defer db.pool.Close(context.Background())
+
+	err := pgxscan.Get(context.Background(), db.pool, result, sql, params...)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return nil
+		}
+		return fmt.Errorf("error executing query: %v", err)
+	}
+	return nil
+}
+
+func (db *dbConnection) query_commit(sql string, params []interface{}) (string, error) {
+	dbInit()
+	defer db.pool.Close(context.Background())
+
+	var uuid string
+	err := db.pool.QueryRow(context.Background(), sql, params...).Scan(&uuid)
+	if err != nil {
+		return "", fmt.Errorf("error executing insert query: %v", err)
+	}
+
+	return uuid, nil
+}
 
 func QueryJson(sql string, result interface{}) error {
-	return db.query_object(sql, result)
+	return db.query_array(sql, result)
+}
+
+func QueryObject(sql string, result interface{}, params []interface{}) error {
+	return db.query_object(sql, result, params)
+}
+
+func QueryCommit(sql string, params []interface{}) (string, error) {
+	return db.query_commit(sql, params)
 }

@@ -8,4 +8,3 @@ INSERT INTO public.patients (patient_name, patient_email, patient_phone)
 SELECT $1, $3, $2
 WHERE NOT EXISTS (SELECT 1 FROM existing_patient)
 RETURNING uuid;
-
