@@ -70,12 +70,12 @@ func insertPatient(patient Patient) (string, error) {
 func fetchSchedulesUUID(reservation Reservation) (string, bool) {
     sql := lib.Template("scheduleUUID")
 
-    parsedDate, err := time.Parse("01/02/2006", reservation.AppointmentDate)
+    parsedDate, err := time.Parse("02-01-2006", reservation.AppointmentDate)
     if err != nil {
         fmt.Println("error parsing appointment date: ", err)
     }
 
-    appointmentDate := parsedDate.Format("2006-02-01")
+    appointmentDate := parsedDate.Format("2006-01-02")
 
     params := []interface{}{
         reservation.DoctorName,

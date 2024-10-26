@@ -46,4 +46,6 @@ VALUES
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Sarah Davis'), '2024-09-08', '11:00:00', '11:30:00'),
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'), '2024-09-09', '09:00:00', '09:30:00'),
 ((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-09-09', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-09-09', '11:00:00', '11:30:00');
+((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-10-26', '11:00:00', '11:30:00'),
+((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-10-27', '10:00:00', '10:30:00'),
+((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-10-28', '11:00:00', '11:30:00');

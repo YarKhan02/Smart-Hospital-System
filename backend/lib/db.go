@@ -48,6 +48,7 @@ func Template(args string) string {
 	return string(content)
 }
 
+// returns rows based on sql query (no parameters)
 func (db *dbConnection) query_array(sql string, result interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
@@ -60,6 +61,7 @@ func (db *dbConnection) query_array(sql string, result interface{}) error {
 	return nil
 }
 
+// returns rows based on sql query (parameters)
 func (db *dbConnection) query_object(sql string, result interface{}, params []interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
@@ -74,6 +76,7 @@ func (db *dbConnection) query_object(sql string, result interface{}, params []in
 	return nil
 }
 
+// commit based on sql query (parameters) return uuid or not
 func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUID bool) (string, error) {
 	dbInit()
 	defer db.pool.Close(context.Background())
