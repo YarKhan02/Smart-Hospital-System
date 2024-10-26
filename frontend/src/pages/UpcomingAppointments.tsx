@@ -2,29 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/card"
 import { Calendar } from "../components/calendar"
 import { Button } from "../components/button"
-import { format } from 'date-fns'
+import { format, isSameDay } from 'date-fns'
 
-const appointments = [
-  { id: 1, patientName: "John Doe", date: "2024-10-27", time: "09:00 AM", reason: "Follow-up" },
-  { id: 2, patientName: "Jane Smith", date: "2024-10-27", time: "10:30 AM", reason: "Annual checkup" },
-  { id: 3, patientName: "Bob Johnson", date: "2024-10-28", time: "02:00 PM", reason: "New patient consultation" },
-]
-
-type Appointment = {
-  date: string;
-  id: string,
-  patientName: string,
-  time: string,
-  reason: string,
-}
+type UpcomingAppointment = {
+  patient_name: string;
+  appointment_date: string;
+  appointment_start: string;
+  appointment_end: string;
+};
 
 export default function Appointments() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
-  const [appointments, setAppointments] = useState<Appointment[]>([])
+  const [appointments, setAppointments] = useState<UpcomingAppointment[]>([])
 
   const loadData = async () => {
     try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/schedules`
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/upcomingAppointment`
       const res = await fetch(backend_url);
       let resJson = await res.json();
       if (res.status === 200) {
@@ -37,9 +30,19 @@ export default function Appointments() {
     }
   };
 
-  const filteredAppointments = appointments.filter(appointment => 
-    format(new Date(appointment.date), 'yyyy-MM-dd') === format(selectedDate || new Date(), 'yyyy-MM-dd')
+  const filteredDate = appointments.filter(appointment => 
+    selectedDate && 
+    isSameDay(new Date(appointment.appointment_date), selectedDate)
   )
+
+  const normalizedAppointments = filteredDate.map((appointment) => {
+    return {
+      patient_name: appointment.patient_name,
+      appointment_date: format(new Date(appointment.appointment_date), 'yyyy-MM-dd'),
+      appointment_start: appointment.appointment_start,
+      appointment_end: appointment.appointment_end,
+    };
+  });
 
   useEffect(() => {
     loadData();
@@ -63,14 +66,14 @@ export default function Appointments() {
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-semibold mb-2">Appointments for {selectedDate?.toDateString()}</h3>
-            {filteredAppointments.length > 0 ? (
+            {normalizedAppointments.length > 0 ? (
               <ul className="space-y-2">
-                {filteredAppointments.map((appointment) => (
-                  <li key={appointment.id} className="bg-white p-3 rounded-lg shadow">
+                {normalizedAppointments.map((appointment, index) => (
+                  <li key={index} className="bg-white p-3 rounded-lg shadow">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="font-semibold">{appointment.patientName}</p>
-                        <p className="text-sm text-gray-600">{appointment.time} - {appointment.reason}</p>
+                        <p className="font-semibold">{appointment.patient_name}</p>
+                        <p className="text-sm text-gray-600">{appointment.appointment_date} ({appointment.appointment_start} - {appointment.appointment_end})</p>
                       </div>
                       <Button size="sm">View Details</Button>
                     </div>

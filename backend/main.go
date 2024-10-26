@@ -6,21 +6,9 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-// func fetchDoctors(c echo.Context) error {
-// 	return services.FetchDoctors(c)
-// }
-
 func fetchSchedule(c echo.Context) error {
 	return services.FetchSchedules(c)
 }
-
-// func fetchUsers(c echo.Context) error {
-// 	return services.FetchUsers(c)
-// }
-
-// func fetchAppointments(c echo.Context) error {
-// 	return services.FetchAppointments(c)
-// }
 
 func postReservation(c echo.Context) error {
 	return services.PostReservation(c)
@@ -28,6 +16,10 @@ func postReservation(c echo.Context) error {
 
 func fetchPateints(c echo.Context) error {
 	return services.FetchPatients(c)
+}
+
+func fetchUpcomingAppointments(c echo.Context) error {
+	return services.FetchUpcomingAppointments(c)
 }
 
 func main() {
@@ -39,12 +31,10 @@ func main() {
         AllowHeaders: []string{echo.HeaderContentType, echo.HeaderAccept},
     }))
 
-	// app.GET("/doctors", fetchDoctors)
 	app.GET("/schedules", fetchSchedule)
 	app.GET("/patients", fetchPateints)
-	// app.GET("/users", fetchUsers)
-	// app.GET("/appointments", fetchAppointments)
 	app.POST("/reservation", postReservation)
+	app.GET("/upcomingAppointment", fetchUpcomingAppointments)
 
 	app.Start(":4567")
 }

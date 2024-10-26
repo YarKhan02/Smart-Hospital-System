@@ -71,7 +71,9 @@ export default function Schedules() {
     window.location.href = `/reservation?${query}`;
   };
 
-
+  useEffect(() => {
+    loadData();
+  }, [])
 
   return (
     <div className="flex h-screen bg-gray-100">
