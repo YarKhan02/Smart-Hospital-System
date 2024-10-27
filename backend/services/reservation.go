@@ -118,6 +118,7 @@ func insertAppointment(s_uuid string, p_uuid string) error {
 
 func PostReservation(c echo.Context) error {
     var data PatientReservation
+    var p_uuid string
 
     if err := c.Bind(&data); err != nil {
         return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
@@ -128,10 +129,10 @@ func PostReservation(c echo.Context) error {
 
     if !isExists {
         uuid, err := insertPatient(data.Patient)
-        fmt.Println(uuid)
         if err != nil {
             return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Reservation failed!"})
         }
+        p_uuid = uuid
     }
 
     err := insertAppointment(s_uuid, p_uuid)

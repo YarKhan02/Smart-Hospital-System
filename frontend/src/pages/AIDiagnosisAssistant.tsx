@@ -6,6 +6,18 @@ import { Textarea } from "../components/textarea"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/table"
 import { Brain } from 'lucide-react'
 
+type PatientAppointment = {
+  appointmentUUID: string;
+  patientName: string;
+  appointmentDate: string;
+  appointmentStart: string;
+  appointmentEnd: string;
+};
+
+type DiagnosisProps = {
+  patientAppointment: PatientAppointment;
+};
+
 const getAISuggestions = (condition: string) => {
   const suggestions = [
     { name: "Amoxicillin", dosage: "500mg", frequency: "3x daily", duration: "7 days" },
@@ -17,7 +29,7 @@ const getAISuggestions = (condition: string) => {
   })
 }
 
-export default function AIDiagnosisAssistant() {
+export default function AIDiagnosisAssistant({ patientAppointment }: DiagnosisProps) {
   const [patientCondition, setPatientCondition] = useState('')
   const [aiSuggestions, setAiSuggestions] = useState<Array<{ name: string; dosage: string; frequency: string; duration: string }>>([])
   const [isLoading, setIsLoading] = useState(false)

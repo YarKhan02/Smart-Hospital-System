@@ -34,7 +34,7 @@ func main() {
 	app.GET("/schedules", fetchSchedule)
 	app.GET("/patients", fetchPateints)
 	app.POST("/reservation", postReservation)
-	app.GET("/upcomingAppointment", fetchUpcomingAppointments)
+	app.GET("/upcoming-appointment", fetchUpcomingAppointments)
 
 	app.Start(":4567")
 }

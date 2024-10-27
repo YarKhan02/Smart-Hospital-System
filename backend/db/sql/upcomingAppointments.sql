@@ -1,4 +1,5 @@
-SELECT 
+SELECT
+    appointments.appointment_uuid,
     patients.patient_name,
     schedules.appointment_date,
     schedules.appointment_start,

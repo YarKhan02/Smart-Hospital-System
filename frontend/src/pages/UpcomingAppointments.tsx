@@ -5,6 +5,7 @@ import { Button } from "../components/button"
 import { format, isSameDay } from 'date-fns'
 
 type UpcomingAppointment = {
+  appointment_uuid: string;
   patient_name: string;
   appointment_date: string;
   appointment_start: string;
@@ -17,7 +18,7 @@ export default function Appointments() {
 
   const loadData = async () => {
     try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/upcomingAppointment`
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/upcoming-appointment`
       const res = await fetch(backend_url);
       let resJson = await res.json();
       if (res.status === 200) {
@@ -37,12 +38,25 @@ export default function Appointments() {
 
   const normalizedAppointments = filteredDate.map((appointment) => {
     return {
+      appointment_uuid: appointment.appointment_uuid,
       patient_name: appointment.patient_name,
       appointment_date: format(new Date(appointment.appointment_date), 'yyyy-MM-dd'),
       appointment_start: appointment.appointment_start,
       appointment_end: appointment.appointment_end,
     };
   });
+
+  const handlePatient = (appointment: UpcomingAppointment) => {
+    const query = new URLSearchParams({
+      appointment_uuid: appointment.appointment_uuid,
+      patient_name: appointment.patient_name,
+      appointment_date: appointment.appointment_date,
+      appointment_start: appointment.appointment_start,
+      appointment_end: appointment.appointment_end,
+    }).toString();
+
+    window.location.href = `/patient-panel?${query}`;
+  };
 
   useEffect(() => {
     loadData();
@@ -75,7 +89,7 @@ export default function Appointments() {
                         <p className="font-semibold">{appointment.patient_name}</p>
                         <p className="text-sm text-gray-600">{appointment.appointment_date} ({appointment.appointment_start} - {appointment.appointment_end})</p>
                       </div>
-                      <Button size="sm">View Details</Button>
+                      <Button size="sm" onClick={() => handlePatient(appointment)}>View Details</Button>
                     </div>
                   </li>
                 ))}

@@ -24,14 +24,6 @@ export default function DoctorsDashboard() {
           <UpcomingAppointments />
         </TabsContent>
 
-        <TabsContent value="medications">
-          <Medications />
-        </TabsContent>
-
-        <TabsContent value="ai-assistant">
-          <AIDiagnosisAssistant />
-        </TabsContent>
-
         <TabsContent value="patients">
           <Patients />
         </TabsContent>

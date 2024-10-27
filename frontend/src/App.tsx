@@ -13,6 +13,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Reservation from './pages/Reservation'
 import DoctorsPanel from './pages/DoctorsPanel'
+import PatientPanel from './pages/PatientPanel'
 
 import { Amplify } from 'aws-amplify'
 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path: '/doctorspanel',
     element: <DoctorsPanel />
+  },
+  {
+    path: '/patient-panel',
+    element: <PatientPanel />
   }
 ]);
 

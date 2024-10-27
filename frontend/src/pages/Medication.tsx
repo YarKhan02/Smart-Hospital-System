@@ -6,6 +6,18 @@ import { Button } from "../components/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/table"
 import { Plus } from 'lucide-react'
 
+type PatientAppointment = {
+  appointmentUUID: string;
+  patientName: string;
+  appointmentDate: string;
+  appointmentStart: string;
+  appointmentEnd: string;
+};
+
+type MedicationsProps = {
+  patientAppointment: PatientAppointment;
+};
+
 const currentPatient = {
   id: 1,
   name: "John Doe",
@@ -19,7 +31,7 @@ const currentPatient = {
   ]
 }
 
-export default function Medications() {
+export default function Medications({ patientAppointment }: MedicationsProps) {
   const [newMedication, setNewMedication] = useState({ name: '', dosage: '', frequency: '', duration: '' })
 
   const handleAddMedication = () => {
