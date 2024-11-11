@@ -3,7 +3,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 DROP TABLE IF EXISTS public.doctors;
 DROP TABLE IF EXISTS public.patients;
 DROP TABLE IF EXISTS public.schedules;
-DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.appointments;
 
 

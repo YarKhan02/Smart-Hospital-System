@@ -1,4 +1,5 @@
-SELECT 
+SELECT
+    schedules.uuid,
     doctors.doctor_name,
     doctors.speciality,
     schedules.appointment_date,

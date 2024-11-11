@@ -9,6 +9,7 @@ import (
 )
 
 type Schedule struct {
+	UUID 			 string `json:"uuid" db:"uuid"`
     DoctorName       string `json:"doctor_name" db:"doctor_name"`
     Speciality       string `json:"speciality" db:"speciality"`
     AppointmentDate  time.Time `json:"appointment_date" db:"appointment_date"`

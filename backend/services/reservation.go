@@ -3,18 +3,14 @@ package services
 import (
 	"fmt"
 	"net/http"
-	"time"
+	// "time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
 	"github.com/labstack/echo/v4"
 )
 
 type Reservation struct {
-    DoctorName      string `json:"doctorName" form:"doctorName"`
-    Speciality      string `json:"speciality" form:"speciality"`
-    AppointmentDate string `json:"appointmentDate" form:"appointmentDate"`
-    AppointmentStart string `json:"appointmentStart" form:"appointmentStart"`
-    AppointmentEnd   string `json:"appointmentEnd" form:"appointmentEnd"`
+    UUID      string `json:"uuid" form:"uuid"`
 }
 
 type Patient struct {
@@ -67,38 +63,6 @@ func insertPatient(patient Patient) (string, error) {
     return uuid, nil
 }
 
-func fetchSchedulesUUID(reservation Reservation) (string, bool) {
-    sql := lib.Template("scheduleUUID")
-
-    parsedDate, err := time.Parse("02-01-2006", reservation.AppointmentDate)
-    if err != nil {
-        fmt.Println("error parsing appointment date: ", err)
-    }
-
-    appointmentDate := parsedDate.Format("2006-01-02")
-
-    params := []interface{}{
-        reservation.DoctorName,
-        reservation.Speciality,
-        appointmentDate,
-        reservation.AppointmentStart,
-        reservation.AppointmentEnd,
-    }
-
-    var uuid UUID
-
-    err = lib.QueryObject(sql, &uuid, params)
-    if err != nil {
-        fmt.Println(err)
-    }
-    
-    if uuid.UUID != "" {
-        return uuid.UUID, true
-    } else {
-        return "", false
-    }
-}
-
 func insertAppointment(s_uuid string, p_uuid string) error {
     sql := lib.Template("insertAppointment")
 
@@ -124,7 +88,9 @@ func PostReservation(c echo.Context) error {
         return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
     }
 
-    s_uuid, _ := fetchSchedulesUUID(data.Reservation)
+    fmt.Println(data)
+
+    s_uuid := data.Reservation.UUID
     p_uuid, isExists := patientExists(data.Patient.PatientEmail)
 
     if !isExists {

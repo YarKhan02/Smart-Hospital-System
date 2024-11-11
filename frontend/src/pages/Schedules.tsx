@@ -14,6 +14,7 @@ const navItems = [
 ]
 
 type Appointment = {
+  uuid: string
   doctor_name: string;
   speciality: string;
   appointment_date: string;
@@ -51,6 +52,7 @@ export default function Schedules() {
 
   const normalizedAppointments = filteredAppointments.map((appointment) => {
     return {
+      uuid: appointment.uuid,
       doctor_name: appointment.doctor_name,
       speciality: appointment.speciality,
       appointment_date: format(new Date(appointment.appointment_date), 'dd-MM-yyyy'),
@@ -61,6 +63,7 @@ export default function Schedules() {
 
   const handleReserve = (appointment: Appointment) => {
     const query = new URLSearchParams({
+      uuid: appointment.uuid,
       doctor_name: appointment.doctor_name,
       speciality: appointment.speciality,
       appointment_date: appointment.appointment_date,

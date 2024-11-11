@@ -13,6 +13,7 @@ const navItems = [
 ]
 
 export default function Reservation() {
+  const [uuid, setUUID] = useState<string>('');
   const [doctorName, setDoctorName] = useState<string>('');
   const [speciality, setSpeciality] = useState<string>('');
   const [appointmentDate, setAppointmentDate] = useState<string>('');
@@ -31,6 +32,7 @@ export default function Reservation() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    setUUID(params.get('uuid') || '');
     setDoctorName(params.get('doctor_name') || '');
     setSpeciality(params.get('speciality') || '');
     setAppointmentDate(params.get('appointment_date') || '');
@@ -66,11 +68,7 @@ export default function Reservation() {
             patientPhone: formData.patientPhone,
           },
           reservation: {
-            doctorName: doctorName,
-            speciality: speciality,
-            appointmentDate: appointmentDate,
-            appointmentStart: appointmentStart,
-            appointmentEnd: appointmentEnd,
+            uuid: uuid,
           },
         }),
       });
