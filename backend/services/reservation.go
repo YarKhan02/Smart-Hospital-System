@@ -88,8 +88,6 @@ func PostReservation(c echo.Context) error {
         return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
     }
 
-    fmt.Println(data)
-
     s_uuid := data.Reservation.UUID
     p_uuid, isExists := patientExists(data.Patient.PatientEmail)
 

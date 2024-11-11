@@ -69,7 +69,7 @@ const router = createBrowserRouter([
     element: <Reservation />
   },
   {
-    path: '/doctorspanel',
+    path: '/doctors-panel',
     element: <DoctorsPanel />
   },
   {

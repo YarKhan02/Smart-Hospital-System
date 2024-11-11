@@ -1,8 +1,9 @@
 package services
 
 import (
-	"time"
+	// "fmt"
 	"net/http"
+	"time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
 	"github.com/labstack/echo/v4"
