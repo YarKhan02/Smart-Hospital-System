@@ -102,7 +102,7 @@ func PostReservation(c echo.Context) error {
     err := insertAppointment(s_uuid, p_uuid)
 
     if err != nil {
-        return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Reservation failed!"})    
+        return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Reservation failed!"})   
     }
 
     return c.JSON(http.StatusOK, echo.Map{"message": "Reservation successful!"})

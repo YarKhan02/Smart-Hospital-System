@@ -46,3 +46,22 @@ CREATE TABLE public.appointments (
 
   CONSTRAINT fk_schedule FOREIGN KEY (schedule_uuid) REFERENCES public.schedules (uuid) ON DELETE CASCADE
 );
+
+CREATE TABLE public.descriptions {
+  description_uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  diagnosis TEXT NOT NULL,
+  notes TEXT
+}
+
+CREATE TABLE public.medications {
+  medication_uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  appointment_uuid UUID NOT NULL,
+  medicine TEXT NOT NULL,
+  dosage TEXT NOT NULL,
+  frequency TEXT NOT NULL,
+  duration TEXT NOT NULL,
+  description_uuid UUID NOT NULL,
+
+  CONSTRAINT fk_appointment FOREIGN KEY (appointment_uuid) REFERENCES public.appointments (appointment_uuid) ON DELETE CASCADE,
+  CONSTRAINT fk_description FOREIGN KEY (description_uuid) REFERENCES public.descriptions (description_uuid) ON DELETE CASCADE
+}
