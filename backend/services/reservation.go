@@ -73,6 +73,8 @@ func insertAppointment(s_uuid string, p_uuid string) error {
  
     _, err := lib.QueryCommit(sql, params, false)
 
+    fmt.Println(err)
+
     if err != nil {
         return fmt.Errorf("query insetion failed!%w", err)
     }

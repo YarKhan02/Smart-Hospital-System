@@ -84,6 +84,7 @@ func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUI
 	if returnUUID {
 		var uuid string
 		err := db.pool.QueryRow(context.Background(), sql, params...).Scan(&uuid)
+		fmt.Println(err)
 		if err != nil {
 			return "", fmt.Errorf("error executing insert query: %v", err)
 		}

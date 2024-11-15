@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/YarKhan02/Smart-Hospital-System/lib"
 	"github.com/labstack/echo/v4"
 )
 
@@ -22,7 +23,7 @@ type MedicationRequest struct {
 	Medications []Medication `json:"medications"`
 }
 
-type Descripton struct {
+type Description struct {
 	Notes string `json:"notes"`
 	Diagnosis string `json:"diagnosis"`
 }
@@ -30,11 +31,13 @@ type Descripton struct {
 type AppointmentRequest struct {
 	Medication  MedicationRequest `json:"medication"`
 	Appointment Appointment       `json:"reservation"`
-	Description Descripton 		  `json:"description"`
+	Description Description 	  `json:"description"`
 }
 
 func postDescription(description Description) (string, error) {
 	sql := lib.Template("description")
+
+	fmt.Println(sql)
 
 	params := []interface{}{
 		description.Diagnosis,
@@ -43,6 +46,8 @@ func postDescription(description Description) (string, error) {
 
 	uuid, err := lib.QueryCommit(sql, params, true)
 
+	fmt.Println(err)
+
     if err != nil {
         return "", fmt.Errorf("query insetion failed!%w", err)
     }
@@ -50,10 +55,10 @@ func postDescription(description Description) (string, error) {
     return uuid, nil
 }
 
-func postMedicine(a_uuid string, d_uuid string, meds MedicationRequest) error {
+func postMedicine(a_uuid string, d_uuid string, meds []Medication) error {
 	sql := lib.Template("medicine")
 
-	for _, med := range med {
+	for _, med := range meds {
 		params := []interface{}{
 			a_uuid,
 			med.Name,
@@ -65,7 +70,7 @@ func postMedicine(a_uuid string, d_uuid string, meds MedicationRequest) error {
 		_, err := lib.QueryCommit(sql, params, false)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Failed!"})
+			return fmt.Errorf("failed! %w", err)
 		}
 	}
 	return nil
@@ -87,6 +92,12 @@ func PostMedication(c echo.Context) error {
 	}
 
 	fmt.Println(d_uuid)
+
+	err = postMedicine(req.Appointment.UUID, d_uuid, req.Medication.Medications)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Data failed to store!"})
+	}
 
 	return c.JSON(http.StatusOK, map[string]string{"message": "Data saved successfully"})
 }

@@ -1,5 +1,5 @@
 SELECT
-    appointments.appointment_uuid,
+    appointments.uuid,
     patients.patient_name,
     schedules.appointment_date,
     schedules.appointment_start,

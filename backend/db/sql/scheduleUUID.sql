@@ -1,7 +1,7 @@
 SELECT
     schedules.uuid
 FROM public.schedules 
-JOIN public.doctors ON schedules.doctor_uuid = doctors.uuid
+JOIN public.doctors ON schedules.uuid = doctors.uuid
 WHERE 
     doctors.doctor_name = $1 AND
     doctors.speciality = $2 AND
