@@ -5,4 +5,5 @@ INSERT INTO public.descriptions (
 VALUES (
     $1, 
     $2
-);
+)
+RETURNING uuid;

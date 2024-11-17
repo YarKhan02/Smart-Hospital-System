@@ -32,7 +32,7 @@ export default function PatientPanel() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setPatientAppointment({
-      appointmentUUID: params.get('appointment_uuid') || '',
+      appointmentUUID: params.get('uuid') || '',
       patientName: params.get('patient_name') || '',
       appointmentDate: params.get('appointment_date') || '',
       appointmentStart: params.get('appointment_start') || '',

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs"
 import UpcomingAppointments from './UpcomingAppointments'
-import Medications from './Medication'
-import AIDiagnosisAssistant from './AIDiagnosisAssistant'
 import Patients from './Patients'
 import Performance from './Performance'
 

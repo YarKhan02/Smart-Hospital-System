@@ -37,16 +37,12 @@ type AppointmentRequest struct {
 func postDescription(description Description) (string, error) {
 	sql := lib.Template("description")
 
-	fmt.Println(sql)
-
 	params := []interface{}{
 		description.Diagnosis,
 		description.Notes,
 	}
 
 	uuid, err := lib.QueryCommit(sql, params, true)
-
-	fmt.Println(err)
 
     if err != nil {
         return "", fmt.Errorf("query insetion failed!%w", err)
@@ -83,15 +79,11 @@ func PostMedication(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	fmt.Println(req)
-
 	d_uuid, err := postDescription(req.Description)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"message": "Failed!"})
 	}
-
-	fmt.Println(d_uuid)
 
 	err = postMedicine(req.Appointment.UUID, d_uuid, req.Medication.Medications)
 

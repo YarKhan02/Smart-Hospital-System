@@ -5,7 +5,7 @@ import { Button } from "../components/button"
 import { format, isSameDay } from 'date-fns'
 
 type UpcomingAppointment = {
-  appointment_uuid: string;
+  uuid: string;
   patient_name: string;
   appointment_date: string;
   appointment_start: string;
@@ -38,7 +38,7 @@ export default function Appointments() {
 
   const normalizedAppointments = filteredDate.map((appointment) => {
     return {
-      appointment_uuid: appointment.appointment_uuid,
+      uuid: appointment.uuid,
       patient_name: appointment.patient_name,
       appointment_date: format(new Date(appointment.appointment_date), 'yyyy-MM-dd'),
       appointment_start: appointment.appointment_start,
@@ -48,7 +48,7 @@ export default function Appointments() {
 
   const handlePatient = (appointment: UpcomingAppointment) => {
     const query = new URLSearchParams({
-      appointment_uuid: appointment.appointment_uuid,
+      uuid: appointment.uuid,
       patient_name: appointment.patient_name,
       appointment_date: appointment.appointment_date,
       appointment_start: appointment.appointment_start,

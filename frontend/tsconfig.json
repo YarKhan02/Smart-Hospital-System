@@ -26,6 +26,7 @@
   },
   "types": ["node", "next", "next/types/global", "@types/chart.js"],
   "include": [
-    "src"
+    "src",
+    "node_modules/@stitches/react"
   ]
 }

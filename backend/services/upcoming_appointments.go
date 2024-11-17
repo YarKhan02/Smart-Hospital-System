@@ -9,7 +9,7 @@ import (
 )
 
 type UpcomingAppointment struct {
-	AppointmentUUId string `json:"appointment_uuid" db:"appointment_uuid"` 
+	AppointmentUUId string `json:"uuid" db:"uuid"` 
 	PatientName	string	`json:"patient_name" db:"patient_name"`
 	AppointmentDate  time.Time `json:"appointment_date" db:"appointment_date"`
     AppointmentStart string `json:"appointment_start" db:"appointment_start"`
