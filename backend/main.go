@@ -30,6 +30,18 @@ func fetchPatientHistory(c echo.Context) error {
 	return services.FetchPatientHistory(c)
 }
 
+func fetchAppointments(c echo.Context) error {
+	return services.FetchAppointments(c)
+}
+
+func modifyAppointment(c echo.Context) error {
+	return services.ModifyAppointment(c)
+}
+
+func deleteAppointment(c echo.Context) error {
+	return services.DeleteAppointment(c)
+}
+
 func main() {
 	app := echo.New()
 
@@ -45,6 +57,9 @@ func main() {
 	app.GET("/upcoming-appointment", fetchUpcomingAppointments)
 	app.POST("/medication", postMedication)
 	app.POST("/patient-history", fetchPatientHistory)
+	app.GET("/appointments", fetchAppointments)
+	app.PUT("/modify-appointment", modifyAppointment)
+	app.DELETE("/delete-appointment", deleteAppointment)
 
 	app.Start(":4567")
 }

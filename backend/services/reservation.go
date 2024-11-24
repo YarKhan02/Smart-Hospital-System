@@ -62,8 +62,28 @@ func insertPatient(patient Patient) (string, error) {
     return uuid, nil
 }
 
+func updateScheduleBooked(s_uuid string) error {
+	sql := lib.Template("updateScheduleBook")
+
+	params := []interface{}{s_uuid}
+
+	err := lib.QueryUpdate(sql, params)
+
+	if err != nil {
+		return fmt.Errorf("error updating query: %v", err)
+	}
+
+	return nil
+}
+
 func insertAppointment(s_uuid string, p_uuid string) error {
     sql := lib.Template("insertAppointment")
+
+    errs := updateScheduleBooked(s_uuid)
+
+    if errs != nil {
+        return fmt.Errorf("schedule update failed! %v", errs)
+    }
 
     params := []interface{}{
 		p_uuid,

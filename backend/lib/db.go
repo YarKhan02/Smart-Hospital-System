@@ -49,11 +49,12 @@ func Template(args string) string {
 }
 
 // returns rows based on sql query (no parameters)
-func (db *dbConnection) query_array(sql string, result interface{}) error {
+func (db *dbConnection) query_json(sql string, result interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
 
 	err := pgxscan.Select(context.Background(), db.pool, result, sql)
+	// fmt.Println(err)
 	if err != nil {
 		return fmt.Errorf("error executing query: %v", err)
 	}
@@ -78,7 +79,7 @@ func (db *dbConnection) query_object_array(sql string, result interface{}, param
 }
 
 
-// returns row based on sql query (parameters)
+// returns single row based on sql query (parameters)
 func (db *dbConnection) query_object(sql string, result interface{}, params []interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
@@ -92,6 +93,31 @@ func (db *dbConnection) query_object(sql string, result interface{}, params []in
 	}
 	return nil
 }
+
+// updates row based on sql query (parameters)
+func (db *dbConnection) query_update(sql string, params []interface{}) error {
+	dbInit()
+	defer db.pool.Close(context.Background())
+
+	_, err := db.pool.Exec(context.Background(), sql, params...)
+	if err != nil {
+		return fmt.Errorf("error executing update query: %v", err)
+	}
+	return nil
+}
+
+// Deletes rows based on SQL query (parameters)
+func (db *dbConnection) query_delete(sql string, params []interface{}) error {
+	dbInit()
+	defer db.pool.Close(context.Background())
+
+	_, err := db.pool.Exec(context.Background(), sql, params...)
+	if err != nil {
+		return fmt.Errorf("error executing delete query: %v", err)
+	}
+	return nil
+}
+
 
 // commit based on sql query (parameters) return uuid or not
 func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUID bool) (string, error) {
@@ -115,7 +141,7 @@ func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUI
 }
 
 func QueryJson(sql string, result interface{}) error {
-	return db.query_array(sql, result)
+	return db.query_json(sql, result)
 }
 
 func QueryObject(sql string, result interface{}, params []interface{}) error {
@@ -124,6 +150,14 @@ func QueryObject(sql string, result interface{}, params []interface{}) error {
 
 func QueryObjectArray(sql string, result interface{}, params []interface{}) error {
 	return db.query_object_array(sql, result, params)
+}
+
+func QueryUpdate(sql string, params []interface{}) error {
+	return db.query_update(sql, params)
+}
+
+func QueryDelete(sql string, params []interface{}) error {
+	return db.query_delete(sql, params)
 }
 
 func QueryCommit(sql string, params []interface{}, returnUUID bool) (string, error) {
