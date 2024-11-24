@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { Button } from "../components/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card";
 import { CalendarDays, Clock, Menu, User, Users } from 'lucide-react';
 
+// Define the Doctor interface matching the backend data structure
 interface Doctor {
-  id: number;
-  name: string;
-  specialty: string;
+  doctorName: string;
+  speciality: string;
 }
 
 const navItems = [
@@ -15,22 +15,30 @@ const navItems = [
   { href: "/doctors", label: "Doctors", icon: User },
   { href: "/records", label: "User Records", icon: Users },
   { href: "/reservations", label: "Make Reservation", icon: CalendarDays },
-]
+];
 
 export default function Doctors() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  useEffect(() => {
-    // Simulated data for demonstration
-    const sampleData: Doctor[] = [
-      { id: 1, name: 'Dr. Smith', specialty: 'Cardiology' },
-      { id: 2, name: 'Dr. Johnson', specialty: 'Pediatrics' },
-      { id: 3, name: 'Dr. Williams', specialty: 'Neurology' },
-      { id: 4, name: 'Dr. Lee', specialty: 'Orthopedics' },
-    ];
+  // Fetch doctor data from the backend
+  const loadData = async () => {
+    try {
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/doctors`;
+      const res = await fetch(backend_url);
+      const resJson = await res.json();
+      if (res.status === 200) {
+        setDoctors(resJson);
+      } else {
+        console.error("Error fetching data:", res);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
 
-    setDoctors(sampleData);
+  useEffect(() => {
+    loadData();
   }, []);
 
   return (
@@ -67,11 +75,11 @@ export default function Doctors() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {doctors.map((doctor) => (
-                <Card key={doctor.id}>
+              {doctors.map((doctor, index) => (
+                <Card key={index}>
                   <CardHeader>
-                    <CardTitle>{doctor.name}</CardTitle>
-                    <CardDescription>{doctor.specialty}</CardDescription>
+                    <CardTitle>{doctor.doctorName}</CardTitle>
+                    <CardDescription>{doctor.speciality}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center">

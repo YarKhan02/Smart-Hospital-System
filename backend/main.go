@@ -42,6 +42,10 @@ func deleteAppointment(c echo.Context) error {
 	return services.DeleteAppointment(c)
 }
 
+func fetchDoctors(c echo.Context) error {
+	return services.FetchDoctors(c)
+}
+
 func main() {
 	app := echo.New()
 
@@ -60,6 +64,7 @@ func main() {
 	app.GET("/appointments", fetchAppointments)
 	app.PUT("/modify-appointment", modifyAppointment)
 	app.DELETE("/delete-appointment", deleteAppointment)
+	app.GET("/doctors", fetchDoctors)
 
 	app.Start(":4567")
 }

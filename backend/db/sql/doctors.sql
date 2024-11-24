@@ -1,0 +1,1 @@
+SELECT doctor_name, speciality FROM public.doctors
