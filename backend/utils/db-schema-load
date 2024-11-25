@@ -6,6 +6,8 @@ LABEL="db-schema-load"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
 schema_path="$(realpath .)/db/schema.sql"
+trigger_functions_path="$(realpath .)/db/trigger_functions.sql"
+triggers_path="$(realpath .)/db/triggers.sql"
 echo $schema_path
 
 if [ "$1" == "prod" ]; then
@@ -17,3 +19,5 @@ else
 fi
 
 psql $CON_URL smart_hospital_system < $schema_path
+psql $CON_URL smart_hospital_system < $trigger_functions_path
+psql $CON_URL smart_hospital_system < $triggers_path

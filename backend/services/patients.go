@@ -19,7 +19,7 @@ func FetchPatients(c echo.Context) error {
 
 	var result []Patients
 	
-	err := lib.QueryJson(sql, &result)
+	err := lib.QueryJsonArray(sql, &result)
 	if err != nil {
 		fmt.Println(result)
 		return c.JSON(http.StatusNotFound, "")

@@ -45,9 +45,11 @@ const formatDate = (dateString: string) => {
 const fetchPatientHistory = async (appointmentUUID: string): Promise<PatientHistory[]> => {
   try {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/patient-history`;
+    const token = localStorage.getItem('authToken');
     const response = await fetch(backend_url, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ appointment_uuid: appointmentUUID }),

@@ -11,7 +11,6 @@ const navItems = [
   { href: "/appointments", label: "Appointments", icon: CalendarDays },
   { href: "/schedules", label: "Schedules", icon: Clock },
   { href: "/doctors", label: "Doctors", icon: User },
-  { href: "/records", label: "User Records", icon: Users },
 ];
 
 interface Doctor {
@@ -32,7 +31,11 @@ function SimpleSidebar({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideb
   return (
     <aside className={`bg-white shadow-md transition-all duration-300 ease-in-out ${isOpen ? 'w-64' : 'w-16'}`}>
       <div className="p-4 flex justify-between items-center">
-        {isOpen && <h2 className="text-lg font-semibold">Hospital</h2>}
+        {isOpen && (
+          <a href="/dashboard" className="text-2xl font-bold text-gray-800 hover:text-gray-600 transition-colors">
+            Hospital
+          </a>
+        )}
         <Button variant="ghost" size="icon" onClick={toggleSidebar}>
           <Menu className="h-6 w-6" />
         </Button>
@@ -43,10 +46,10 @@ function SimpleSidebar({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSideb
             key={item.href}
             href={item.href}
             className={`flex items-center py-2 px-4 ${
-              isOpen ? 'text-gray-700 hover:bg-gray-100' : 'justify-center'
+              isOpen ? 'text-gray-700 hover:bg-gray-100' : ''
             } ${window.location.pathname === item.href ? 'bg-gray-100' : ''}`}
           >
-            <item.icon className={`h-5 w-5 ${isOpen ? 'mr-3' : ''}`} />
+            <item.icon className={`h-5 w-5 ${isOpen ? 'mr-3' : 'mx-auto'}`} />
             {isOpen && <span>{item.label}</span>}
           </a>
         ))}
@@ -150,9 +153,24 @@ export default function Doctors() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const doctorsRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/doctors`);
-        const schedulesRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/schedules`);
-        
+        const token = localStorage.getItem("authToken");
+  
+        const doctorsRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/doctors`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const schedulesRes = await fetch(`${process.env.REACT_APP_BACKEND_URL}/schedules`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
         if (doctorsRes.ok && schedulesRes.ok) {
           const doctorsData = await doctorsRes.json();
           const schedulesData = await schedulesRes.json();
@@ -160,14 +178,16 @@ export default function Doctors() {
           setSchedules(schedulesData);
         } else {
           console.error("Failed to fetch data");
+          console.error("Doctors Response:", await doctorsRes.text());
+          console.error("Schedules Response:", await schedulesRes.text());
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     loadData();
-  }, []);
+  }, []);  
 
   const filteredDoctors = doctors.filter(doctor =>
     doctor.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||

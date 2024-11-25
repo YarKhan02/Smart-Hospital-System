@@ -48,8 +48,8 @@ func Template(args string) string {
 	return string(content)
 }
 
-// returns rows based on sql query (no parameters)
-func (db *dbConnection) query_json(sql string, result interface{}) error {
+// returns multiple rows based on sql query (no parameters)
+func (db *dbConnection) query_json_array(sql string, result interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
 
@@ -61,6 +61,23 @@ func (db *dbConnection) query_json(sql string, result interface{}) error {
 
 	return nil
 }
+
+// returns single row based on sql query (no parameters)
+func (db *dbConnection) query_json(sql string, result interface{}) error {
+	dbInit()
+	defer db.pool.Close(context.Background())
+
+	err := pgxscan.Get(context.Background(), db.pool, result, sql)
+	// fmt.Println(err)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return nil
+		}
+		return fmt.Errorf("error executing query: %v", err)
+	}
+	return nil
+}
+
 
 // returns multiple rows based on sql query (parameter)
 func (db *dbConnection) query_object_array(sql string, result interface{}, params []interface{}) error {
@@ -106,7 +123,7 @@ func (db *dbConnection) query_update(sql string, params []interface{}) error {
 	return nil
 }
 
-// Deletes rows based on SQL query (parameters)
+// deletes rows based on SQL query (parameters)
 func (db *dbConnection) query_delete(sql string, params []interface{}) error {
 	dbInit()
 	defer db.pool.Close(context.Background())
@@ -117,7 +134,6 @@ func (db *dbConnection) query_delete(sql string, params []interface{}) error {
 	}
 	return nil
 }
-
 
 // commit based on sql query (parameters) return uuid or not
 func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUID bool) (string, error) {
@@ -138,6 +154,10 @@ func (db *dbConnection) query_commit(sql string, params []interface{}, returnUUI
 		}
 		return "", nil
 	}
+}
+
+func QueryJsonArray(sql string, result interface{}) error {
+	return db.query_json_array(sql, result)
 }
 
 func QueryJson(sql string, result interface{}) error {

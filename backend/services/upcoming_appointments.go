@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
+	"github.com/YarKhan02/Smart-Hospital-System/oauth"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,11 +18,18 @@ type UpcomingAppointment struct {
 }
 
 func FetchUpcomingAppointments(c echo.Context) error {
+	claims, ok := c.Get("claims").(*oauth.Claims)
+	if !ok {
+		return c.JSON(http.StatusNotFound, "")
+	}
+
+	d_uuid := claims.DoctorUUID
+
 	sql := lib.Template("upcomingAppointments")
-	
 	var result []UpcomingAppointment
+	params := []interface{}{d_uuid}
 	
-	err := lib.QueryJson(sql, &result)
+	err := lib.QueryObjectArray(sql, &result, params)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, "")
 	}

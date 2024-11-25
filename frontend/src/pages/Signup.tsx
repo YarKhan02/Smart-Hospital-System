@@ -13,9 +13,9 @@ export default function DoctorSignup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phoneNumber: '',
     password: '',
     speciality: '',
-    phoneNumber: '',
   })
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -33,16 +33,25 @@ export default function DoctorSignup() {
     e.preventDefault()
     setError('')
     setIsLoading(true)
-
+  
     try {
-      const response = await fetch('/api/signup', {
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/signup`
+      const response = await fetch(backend_url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-
+  
       if (response.ok) {
-        window.location.href = '/dashboard' // Redirect to dashboard on successful signup
+        const data = await response.json()
+  
+        if (data.token) {
+          localStorage.setItem('authToken', data.token)
+  
+          window.location.href = '/doctors-panel'
+        } else {
+          setError('No token received. Please try again.')
+        }
       } else {
         const data = await response.json()
         setError(data.message || 'Signup failed. Please try again.')
@@ -110,10 +119,10 @@ export default function DoctorSignup() {
               <div className="space-y-2">
                 <Label htmlFor="speciality">Speciality</Label>
                 <Select onValueChange={handleSpecialityChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full bg-white border border-gray-300">
                     <SelectValue placeholder="Select your speciality" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border border-gray-300">
                     <SelectItem value="cardiology">Cardiology</SelectItem>
                     <SelectItem value="dermatology">Dermatology</SelectItem>
                     <SelectItem value="neurology">Neurology</SelectItem>
@@ -148,4 +157,3 @@ export default function DoctorSignup() {
     </div>
   )
 }
-

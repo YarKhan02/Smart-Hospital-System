@@ -1,7 +1,6 @@
 package services
 
 import (
-	// "fmt"
 	"net/http"
 	"time"
 
@@ -23,7 +22,7 @@ func FetchSchedules(c echo.Context) error {
 	
 	var result []Schedule
 	
-	err := lib.QueryJson(sql, &result)
+	err := lib.QueryJsonArray(sql, &result)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, "")
 	}

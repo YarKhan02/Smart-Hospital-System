@@ -10,7 +10,6 @@ import { Label } from "../components/label";
 import { Input } from "../components/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "../components/dialog";
 import { format } from 'date-fns';
-import { cn } from "../lib/utils";
 
 const GlobalStyle = createGlobalStyle`
   .radix-themes {
@@ -44,8 +43,6 @@ const navItems = [
   { href: "/appointments", label: "Appointments", icon: CalendarDays },
   { href: "/schedules", label: "Schedules", icon: Clock },
   { href: "/doctors", label: "Doctors", icon: User },
-  { href: "/records", label: "User Records", icon: Users },
-  { href: "/reservations", label: "Make Reservation", icon: CalendarDays },
 ]
 
 const formatDate = (dateString: string | null) => {
@@ -78,7 +75,14 @@ export default function Appointments() {
     setIsLoading(true);
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/appointments`;
-      const res = await fetch(backend_url);
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(backend_url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       let resJson = await res.json();
       if (res.status === 200) {
         setAppointments(resJson || []);
@@ -100,7 +104,14 @@ export default function Appointments() {
   const loadDataSchedules = async () => {
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/schedules`
-      const res = await fetch(backend_url);
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(backend_url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       let resJson = await res.json();
       if (res.status === 200) {
         setDoctorSchedules(resJson || []);
@@ -163,9 +174,11 @@ export default function Appointments() {
   const sendDeleteRequest = async (id: string) => {
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/delete-appointment`;
+      const token = localStorage.getItem('authToken');
       const res = await fetch(backend_url, {
         method: 'DELETE',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -193,6 +206,7 @@ export default function Appointments() {
     }
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/modify-appointment`;
+      const token = localStorage.getItem('authToken');
       const updatedAppointment = {
         ...editingAppointment,
         scheduleUuid: selectedScheduleUuid
@@ -200,6 +214,7 @@ export default function Appointments() {
       const res = await fetch(backend_url, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -249,7 +264,11 @@ export default function Appointments() {
       <div className="flex h-screen bg-gray-100">
         <aside className={`${isSidebarOpen ? 'w-64' : 'w-16'} bg-white shadow-md transition-all duration-300 ease-in-out`}>
           <div className="p-4 flex justify-between items-center">
-            {isSidebarOpen && <h1 className="text-2xl font-bold text-gray-800">Hospital</h1>}
+            {isSidebarOpen && (
+              <a href="/dashboard" className="text-2xl font-bold text-gray-800 hover:text-gray-600 transition-colors">
+                Hospital
+              </a>
+            )}
             <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
@@ -259,11 +278,14 @@ export default function Appointments() {
               <a
                 key={item.href}
                 href={item.href}
-                className={`block py-2 px-4 ${isSidebarOpen ? 'text-gray-700 hover:bg-gray-200' : 'text-center'}`}
+                className={`block py-2 px-4 ${isSidebarOpen ? 'text-gray-700 hover:bg-gray-200' : ''}`}
                 title={item.label}
               >
                 {isSidebarOpen ? (
-                  item.label
+                  <span className="flex items-center">
+                    <item.icon className="h-5 w-5 mr-2" />
+                    {item.label}
+                  </span>
                 ) : (
                   <item.icon className="h-6 w-6 mx-auto" />
                 )}

@@ -78,9 +78,11 @@ export default function Medications({ patientAppointment }: MedicationProps) {
 
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/medication`
+      const token = localStorage.getItem('authToken');
       const response = await fetch(backend_url, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

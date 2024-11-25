@@ -25,6 +25,7 @@ LEFT JOIN
     public.medications ON medications.appointment_uuid = appointments.uuid
 WHERE 
     appointments.patient_uuid = $1
+    AND schedules.doctor_uuid = $2
 GROUP BY 
     schedules.appointment_date, descriptions.diagnosis, descriptions.notes
 ORDER BY 

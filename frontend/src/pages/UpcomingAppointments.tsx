@@ -14,35 +14,50 @@ type UpcomingAppointment = {
 
 export default function Appointments() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
-  const [appointments, setAppointments] = useState<UpcomingAppointment[]>([])
+  const [appointments, setAppointments] = useState<UpcomingAppointment[]>([])  // Empty array initially
 
   const loadData = async () => {
     try {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/upcoming-appointment`
-      const res = await fetch(backend_url);
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(backend_url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       let resJson = await res.json();
       if (res.status === 200) {
-        setAppointments(resJson)
+        if (Array.isArray(resJson) && resJson.length > 0) {
+          setAppointments(resJson);  // Set appointments only if there are any
+        } else {
+          setAppointments([]);  // Set empty array if no appointments
+        }
       } else {
-        console.log(res)
+        console.log(res);
+        setAppointments([]);  // Handle error by setting empty array
       }
     } catch (err) {
       console.log(err);
+      setAppointments([]);  // In case of error, reset to empty array
     }
   };
 
+  // Filter appointments based on selected date
   const filteredDate = appointments.filter(appointment => 
     selectedDate && 
     isSameDay(new Date(appointment.appointment_date), selectedDate)
-  )
+  );
 
+  // Normalize appointment data for rendering
   const normalizedAppointments = filteredDate.map((appointment) => {
     return {
-      uuid: appointment.uuid,
-      patient_name: appointment.patient_name,
-      appointment_date: format(new Date(appointment.appointment_date), 'yyyy-MM-dd'),
-      appointment_start: appointment.appointment_start,
-      appointment_end: appointment.appointment_end,
+      uuid: appointment.uuid ?? '',
+      patient_name: appointment.patient_name ?? 'Unknown Patient',
+      appointment_date: appointment.appointment_date ? format(new Date(appointment.appointment_date), 'yyyy-MM-dd') : 'N/A',
+      appointment_start: appointment.appointment_start ?? 'N/A',
+      appointment_end: appointment.appointment_end ?? 'N/A',
     };
   });
 
@@ -59,7 +74,7 @@ export default function Appointments() {
   };
 
   useEffect(() => {
-    loadData();
+    loadData();  // Fetch appointments on component mount
   }, [])
 
   return (

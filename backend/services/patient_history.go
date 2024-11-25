@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
+	"github.com/YarKhan02/Smart-Hospital-System/oauth"
 	"github.com/labstack/echo/v4"
 )
 
@@ -35,8 +36,6 @@ type P_UUID struct {
 func fetchPatientUUID(a_uuid string) (string, error) {
 	sql := lib.Template("patientUUID")
 
-	fmt.Println(a_uuid)
-
 	params := []interface{}{a_uuid}
 
 	var p_uuid P_UUID
@@ -50,6 +49,15 @@ func fetchPatientUUID(a_uuid string) (string, error) {
 } 
 
 func FetchPatientHistory(c echo.Context) error {
+	claims, ok := c.Get("claims").(*oauth.Claims)
+	if !ok {
+		return c.JSON(http.StatusNotFound, "")
+	}
+
+	d_uuid := claims.DoctorUUID
+
+	fmt.Println(d_uuid)
+
 	var data AppointmentUUID
 	
 	if err := c.Bind(&data); err != nil {
@@ -58,15 +66,16 @@ func FetchPatientHistory(c echo.Context) error {
 
 	p_uuid, er := fetchPatientUUID(data.UUID)
 
-	fmt.Println(p_uuid)
-
 	if er != nil {
 		return c.JSON(http.StatusInternalServerError, er)
 	}
 
 	sql := lib.Template("patientHistory")
 	
-	params := []interface{}{p_uuid}
+	params := []interface{}{
+		p_uuid,
+		d_uuid,
+	}
 
 	var histories []PatientHistory
 	err := lib.QueryObjectArray(sql, &histories, params)

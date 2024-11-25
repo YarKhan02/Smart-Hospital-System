@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/YarKhan02/Smart-Hospital-System/lib"
@@ -18,13 +17,11 @@ func FetchDoctors(c echo.Context) error {
 
 	var doctors []Doctor
 
-	err := lib.QueryJson(sql, &doctors)
+	err := lib.QueryJsonArray(sql, &doctors)
 	
 	if err != nil {
 		return c.JSON(http.StatusNotFound, "Error fetching doctors")
 	}
-
-	fmt.Println(doctors)
 
 	return c.JSON(http.StatusOK, doctors)
 }

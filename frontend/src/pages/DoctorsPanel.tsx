@@ -2,7 +2,6 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/tabs"
 import UpcomingAppointments from './UpcomingAppointments'
 import Patients from './Patients'
-import Performance from './Performance'
 
 export default function DoctorsDashboard() {
   return (
@@ -13,7 +12,6 @@ export default function DoctorsDashboard() {
         <TabsList>
           <TabsTrigger value="upcoming-appointments">UpcomingAppointments</TabsTrigger>
           <TabsTrigger value="patients">Patients</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
         </TabsList>
 
         <TabsContent value="upcoming-appointments">
@@ -22,10 +20,6 @@ export default function DoctorsDashboard() {
 
         <TabsContent value="patients">
           <Patients />
-        </TabsContent>
-
-        <TabsContent value="performance">
-          <Performance />
         </TabsContent>
       </Tabs>
     </div>

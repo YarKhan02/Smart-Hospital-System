@@ -22,7 +22,7 @@ func FetchAppointments(c echo.Context) error {
 	
 	var result []Appointments
 	
-	err := lib.QueryJson(sql, &result)
+	err := lib.QueryJsonArray(sql, &result)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, "")
 	}

@@ -4,6 +4,7 @@ services:
       FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       CONNECTION_URL: "postgresql://postgres:password@db:5432/smart_hospital_system"
+      JWT_SECRET_KEY: "JWT_SECRET_KEY_BACKEND_GO_HOSPITAL_SYSTEM"
     build: ./backend
     ports:
       - "4567:4567"
