@@ -163,7 +163,3 @@ export default function Schedules() {
     </div>
   )
 }
-
-function parseISO(appointment_date: string): any {
-  throw new Error('Function not implemented.')
-}

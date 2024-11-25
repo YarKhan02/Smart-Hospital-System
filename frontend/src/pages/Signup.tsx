@@ -1,103 +1,151 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+'use client'
 
-import { Button } from "../components/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/card";
-import { Input } from "../components/input";
-import { Label } from "../components/label";
-import { Icons } from "../components/icons";
+import { useState } from 'react'
+import { Button } from "../components/button"
+import { Input } from "../components/input"
+import { Label } from "../components/label"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card"
+import { Alert, AlertDescription } from "../components/alert"
+import { AlertTriangle } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/select"
 
-import { Auth } from 'aws-amplify';
+export default function DoctorSignup() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    speciality: '',
+    phoneNumber: '',
+  })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-export default function SignupPage() {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
-  const [errors, setErrors] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const navigate = useNavigate();
+  const handleSpecialityChange = (value: string) => {
+    setFormData(prev => ({ ...prev, speciality: value }))
+  }
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault(); // Make sure this prevents page refresh
-    setIsLoading(true);
-    setErrors('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setIsLoading(true)
 
     try {
-      const { user } = await Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-          name: name,
-          email: email,
-          preferred_username: username,
-        },
-        autoSignIn: {
-          enabled: true,
-        }
-      });
-      console.log(user);
-      window.location.href = `/confirm?email=${email}`;
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-        setErrors(error.message);
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        window.location.href = '/dashboard' // Redirect to dashboard on successful signup
       } else {
-        console.error('An unknown error occurred.');
+        const data = await response.json()
+        setError(data.message || 'Signup failed. Please try again.')
       }
+    } catch (err) {
+      setError('An error occurred. Please try again later.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
-  const name_onchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-  const email_onchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-  const username_onchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-  const password_onchange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br">
-      <Card className="w-[350px]">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Create an account</CardTitle>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-lg">
+        <CardHeader>
+          <CardTitle>Doctor Signup</CardTitle>
+          <CardDescription>Create your account to join our medical platform</CardDescription>
         </CardHeader>
-        <form onSubmit={onSubmit}>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" type="text" placeholder="Me" value={name} onChange={name_onchange} />
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="speciality">Speciality</Label>
+                <Select onValueChange={handleSpecialityChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select your speciality" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cardiology">Cardiology</SelectItem>
+                    <SelectItem value="dermatology">Dermatology</SelectItem>
+                    <SelectItem value="neurology">Neurology</SelectItem>
+                    <SelectItem value="orthopedics">Orthopedics</SelectItem>
+                    <SelectItem value="pediatrics">Pediatrics</SelectItem>
+                    <SelectItem value="psychiatry">Psychiatry</SelectItem>
+                    <SelectItem value="surgery">Surgery</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="abc@example.com" value={email} onChange={email_onchange} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={password_onchange} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input id="confirm-password" type="password" />
-            </div>
-            {errors && <div className="text-red-500 text-center">{errors}</div>}
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full">
-              {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-              Sign Up
+            {error && (
+              <Alert variant="destructive" className="mt-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            <Button className="w-full mt-6" type="submit" disabled={isLoading}>
+              {isLoading ? 'Signing up...' : 'Sign up'}
             </Button>
-          </CardFooter>
-        </form>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <p className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <a href="/login" className="text-blue-600 hover:underline">
+              Log in
+            </a>
+          </p>
+        </CardFooter>
       </Card>
     </div>
-  );
+  )
 }
+

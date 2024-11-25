@@ -1,15 +1,16 @@
 -- Insert test data into the doctors table
-INSERT INTO public.doctors (doctor_name, speciality, contact_info) VALUES
-('Dr. John Smith', 'Cardiologist', 1234567890),
-('Dr. Emily Johnson', 'Neurologist', 2345678901),
-('Dr. Michael Brown', 'Orthopedic', 3456789012),
-('Dr. Sarah Davis', 'Pediatrician', 4567890123),
-('Dr. David Wilson', 'Dermatologist', 5678901234),
-('Dr. Jessica Martinez', 'Psychiatrist', 6789012345),
-('Dr. Thomas Anderson', 'Gastroenterologist', 7890123456),
-('Dr. Karen Taylor', 'Radiologist', 8901234567),
-('Dr. Kevin White', 'Anesthesiologist', 9012345678),
-('Dr. Angela Harris', 'Ophthalmologist', 1023456789);
+INSERT INTO public.doctors (doctor_name, speciality, email, phone_number) VALUES
+('Dr. John Smith', 'Cardiologist', 'john.smith@gmail.com', '1234567890'),
+('Dr. Emily Johnson', 'Neurologist', 'emily.johnson@gmail.com', '2345678901'),
+('Dr. Michael Brown', 'Orthopedic', 'michael.brown@gmail.com', '3456789012'),
+('Dr. Sarah Davis', 'Pediatrician', 'sarah.davis@gmail.com', '4567890123'),
+('Dr. David Wilson', 'Dermatologist', 'david.wilson@gmail.com', '5678901234'),
+('Dr. Jessica Martinez', 'Psychiatrist', 'jessica.martinez@gmail.com', '6789012345'),
+('Dr. Thomas Anderson', 'Gastroenterologist', 'thomas.anderson@gmail.com', '7890123456'),
+('Dr. Karen Taylor', 'Radiologist', 'karen.taylor@gmail.com', '8901234567'),
+('Dr. Kevin White', 'Anesthesiologist', 'kevin.white@gmail.com', '9012345678'),
+('Dr. Angela Harris', 'Ophthalmologist', 'angela.harris@gmail.com', '1023456789');
+
 
 -- Insert initial data into patients table
 INSERT INTO public.patients (patient_name, patient_email, patient_phone) VALUES

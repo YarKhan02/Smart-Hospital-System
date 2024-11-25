@@ -11,9 +11,12 @@ CREATE TABLE public.doctors (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   doctor_name TEXT NOT NULL,
   speciality TEXT NOT NULL,
-  contact_info BIGINT DEFAULT 0,
+  email TEXT UNIQUE NOT NULL,
+  phone_number TEXT DEFAULT NULL,
   joined_at TIMESTAMP default current_timestamp NOT NULL
 );
+
+
 
 -- PATIENT TABLE 
 CREATE TABLE public.patients (
