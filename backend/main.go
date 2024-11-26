@@ -59,6 +59,10 @@ func signUp(c echo.Context) error {
 	return services.SignUp(c)
 }
 
+func login(c echo.Context) error {
+	return services.Login(c)
+}
+
 func main() {
 	app := echo.New()
 
@@ -71,6 +75,7 @@ func main() {
 
 	// Public routes (no JWT middleware)
 	app.POST("/signup", signUp)
+	app.POST("/login", login)
 
 	// Routes requiring JWT authentication
 	protected := app.Group("") // Create a group for protected routes

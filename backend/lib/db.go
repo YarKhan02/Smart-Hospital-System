@@ -102,6 +102,7 @@ func (db *dbConnection) query_object(sql string, result interface{}, params []in
 	defer db.pool.Close(context.Background())
 
 	err := pgxscan.Get(context.Background(), db.pool, result, sql, params...)
+	// fmt.Println(err)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return nil
