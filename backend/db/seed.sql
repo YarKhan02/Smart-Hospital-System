@@ -12,6 +12,7 @@ INSERT INTO public.staffs (uuid, email, password) VALUES
 ('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', 'angela.harris@gmail.com', 'password707');
 
 
+
 -- Insert test data into the doctors table
 INSERT INTO public.doctors (uuid, doctor_name, speciality, email, phone_number) VALUES
 ('1e4f1d7c-ffb4-4b57-bbd9-a1d11dff6c1a', 'Dr. John Smith', 'Cardiologist', 'john.smith@gmail.com', '1234567890'),
@@ -26,41 +27,56 @@ INSERT INTO public.doctors (uuid, doctor_name, speciality, email, phone_number) 
 ('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', 'Dr. Angela Harris', 'Ophthalmologist', 'angela.harris@gmail.com', '1023456789');
 
 
--- Insert initial data into patients table
-INSERT INTO public.patients (patient_name, patient_email, patient_phone) VALUES
-('John Doe', 'johndoe@gmail.com', '1234567890'),
-('Jane Smith', 'janedoe@gmail.com', '0987654321');
 
+-- Insert schedules into the schedules table
+INSERT INTO public.schedules (doctor_uuid, appointment_date, appointment_start, appointment_end, status)
+VALUES
+-- Dr. John Smith
+('1e4f1d7c-ffb4-4b57-bbd9-a1d11dff6c1a', '2024-12-01', '09:00', '12:00', 'Available'),
+('1e4f1d7c-ffb4-4b57-bbd9-a1d11dff6c1a', '2024-12-03', '14:00', '17:00', 'Available'),
+('1e4f1d7c-ffb4-4b57-bbd9-a1d11dff6c1a', '2024-12-05', '18:00', '21:00', 'Available'),
 
--- Insert test data into the schedule table
-INSERT INTO public.schedules (doctor_uuid, appointment_date, appointment_start, appointment_end)
-VALUES 
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. John Smith'), '2024-09-01', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'), '2024-09-01', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Michael Brown'), '2024-09-01', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Sarah Davis'), '2024-09-02', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'), '2024-09-02', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-09-02', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-09-03', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Karen Taylor'), '2024-09-03', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Kevin White'), '2024-09-03', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris'), '2024-09-04', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. John Smith'), '2024-09-04', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'), '2024-09-04', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Michael Brown'), '2024-09-05', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Sarah Davis'), '2024-09-05', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'), '2024-09-05', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-09-06', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-09-06', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Karen Taylor'), '2024-09-06', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Kevin White'), '2024-09-07', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Angela Harris'), '2024-09-07', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. John Smith'), '2024-09-07', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Emily Johnson'), '2024-09-08', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Michael Brown'), '2024-09-08', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Sarah Davis'), '2024-09-08', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. David Wilson'), '2024-09-09', '09:00:00', '09:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-09-09', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-10-26', '11:00:00', '11:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Jessica Martinez'), '2024-10-27', '10:00:00', '10:30:00'),
-((SELECT uuid FROM public.doctors WHERE doctor_name = 'Dr. Thomas Anderson'), '2024-10-28', '11:00:00', '11:30:00');
+-- Dr. Emily Johnson
+('2c9f51a2-9a3d-4748-a83d-55b73a1e23a8', '2024-12-02', '10:00', '13:00', 'Available'),
+('2c9f51a2-9a3d-4748-a83d-55b73a1e23a8', '2024-12-04', '15:00', '18:00', 'Available'),
+('2c9f51a2-9a3d-4748-a83d-55b73a1e23a8', '2024-12-06', '19:00', '22:00', 'Available'),
+
+-- Dr. Michael Brown
+('3b2d7f9d-d3d9-47d6-93a5-984fcb2b55d9', '2024-12-01', '08:00', '11:00', 'Available'),
+('3b2d7f9d-d3d9-47d6-93a5-984fcb2b55d9', '2024-12-03', '12:00', '15:00', 'Available'),
+('3b2d7f9d-d3d9-47d6-93a5-984fcb2b55d9', '2024-12-05', '16:00', '19:00', 'Available'),
+
+-- Dr. Sarah Davis
+('4e4a7b9c-d9f3-437d-b41a-77d6c01a48c1', '2024-12-02', '07:00', '10:00', 'Available'),
+('4e4a7b9c-d9f3-437d-b41a-77d6c01a48c1', '2024-12-04', '13:00', '16:00', 'Available'),
+('4e4a7b9c-d9f3-437d-b41a-77d6c01a48c1', '2024-12-06', '17:00', '20:00', 'Available'),
+
+-- Dr. David Wilson
+('5d1f8a3b-d7e2-4a27-882d-f50b7d8f98e3', '2024-12-01', '09:00', '12:00', 'Available'),
+('5d1f8a3b-d7e2-4a27-882d-f50b7d8f98e3', '2024-12-03', '14:00', '17:00', 'Available'),
+('5d1f8a3b-d7e2-4a27-882d-f50b7d8f98e3', '2024-12-05', '18:00', '21:00', 'Available'),
+
+-- Dr. Jessica Martinez
+('6f2b7e9f-c9f1-4f9e-a2d4-5a9c0b1f84e7', '2024-12-02', '10:00', '13:00', 'Available'),
+('6f2b7e9f-c9f1-4f9e-a2d4-5a9c0b1f84e7', '2024-12-04', '15:00', '18:00', 'Available'),
+('6f2b7e9f-c9f1-4f9e-a2d4-5a9c0b1f84e7', '2024-12-06', '19:00', '22:00', 'Available'),
+
+-- Dr. Thomas Anderson
+('7a3d8f1c-b3d2-423b-852d-1e0f3a2c78f5', '2024-12-01', '08:00', '11:00', 'Available'),
+('7a3d8f1c-b3d2-423b-852d-1e0f3a2c78f5', '2024-12-03', '12:00', '15:00', 'Available'),
+('7a3d8f1c-b3d2-423b-852d-1e0f3a2c78f5', '2024-12-05', '16:00', '19:00', 'Available'),
+
+-- Dr. Karen Taylor
+('8b4e9a7f-fd3a-423d-b8e1-d2b7e9f91c84', '2024-12-02', '07:00', '10:00', 'Available'),
+('8b4e9a7f-fd3a-423d-b8e1-d2b7e9f91c84', '2024-12-04', '13:00', '16:00', 'Available'),
+('8b4e9a7f-fd3a-423d-b8e1-d2b7e9f91c84', '2024-12-06', '17:00', '20:00', 'Available'),
+
+-- Dr. Kevin White
+('9c5f1e3a-b7f2-49a1-93e4-5d1f8a2b93e7', '2024-12-01', '09:00', '12:00', 'Available'),
+('9c5f1e3a-b7f2-49a1-93e4-5d1f8a2b93e7', '2024-12-03', '14:00', '17:00', 'Available'),
+('9c5f1e3a-b7f2-49a1-93e4-5d1f8a2b93e7', '2024-12-05', '18:00', '21:00', 'Available'),
+
+-- Dr. Angela Harris
+('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', '2024-12-02', '10:00', '13:00', 'Available'),
+('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', '2024-12-04', '15:00', '18:00', 'Available'),
+('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', '2024-12-06', '19:00', '22:00', 'Available');

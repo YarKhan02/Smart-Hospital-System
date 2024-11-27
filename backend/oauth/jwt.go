@@ -31,8 +31,8 @@ func GenerateJWT(email string, doctorUUID string) (string, error) {
 		Email: email,
 		DoctorUUID: doctorUUID,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(), // Token expires in 24 hours
-			Issuer:    "your-app",                            // You can modify the issuer
+			ExpiresAt: time.Now().Add(45 * time.Minute).Unix(), // Token expires in 15 minutes
+			Issuer:    "wali-amna",                            // You can modify the issuer
 		},
 	}
 
