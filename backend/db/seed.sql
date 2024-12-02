@@ -13,6 +13,7 @@ INSERT INTO public.staffs (uuid, email, password) VALUES
 
 
 
+
 -- Insert test data into the doctors table
 INSERT INTO public.doctors (uuid, doctor_name, speciality, email, phone_number) VALUES
 ('1e4f1d7c-ffb4-4b57-bbd9-a1d11dff6c1a', 'Dr. John Smith', 'Cardiologist', 'john.smith@gmail.com', '1234567890'),
@@ -25,7 +26,6 @@ INSERT INTO public.doctors (uuid, doctor_name, speciality, email, phone_number) 
 ('8b4e9a7f-fd3a-423d-b8e1-d2b7e9f91c84', 'Dr. Karen Taylor', 'Radiologist', 'karen.taylor@gmail.com', '8901234567'),
 ('9c5f1e3a-b7f2-49a1-93e4-5d1f8a2b93e7', 'Dr. Kevin White', 'Anesthesiologist', 'kevin.white@gmail.com', '9012345678'),
 ('af3d2e7b-c8a1-41d9-92b3-7e9f1a4d5c02', 'Dr. Angela Harris', 'Ophthalmologist', 'angela.harris@gmail.com', '1023456789');
-
 
 
 -- Insert schedules into the schedules table

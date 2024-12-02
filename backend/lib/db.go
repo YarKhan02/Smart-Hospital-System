@@ -27,7 +27,7 @@ func (db *dbConnection) ConnectToDB() {
 		log.Fatalf("Unable to connect to database: %v", err)
 	}
 
-	fmt.Println("Connected to PostgreSQL!")
+	// fmt.Println("Connected to PostgreSQL!")
 
 	db.pool = pool
 }

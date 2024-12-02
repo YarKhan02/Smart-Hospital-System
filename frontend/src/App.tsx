@@ -15,6 +15,7 @@ import Signup from './pages/Signup'
 import Reservation from './pages/Reservation'
 import DoctorsPanel from './pages/DoctorsPanel'
 import PatientPanel from './pages/PatientPanel'
+import AboutUs from './pages/AboutUs'
 
 // Create router configuration
 const router = createBrowserRouter([
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: '/patient-panel',
     element: <PatientPanel />
+  },
+  {
+    path: '/about',
+    element: <AboutUs />
   }
 ]);
 

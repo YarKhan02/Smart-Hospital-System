@@ -4,10 +4,6 @@ import { Input } from "../components/input";
 import { Label } from "../components/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/card";
 
-interface LoginProps {
-  onLogin: () => void;
-}
-
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -33,10 +29,8 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-
         window.location.href = '/doctors-panel';
       } else {
-        // Show error message if login failed
         setError(data.message || 'Login failed');
       }
     } catch (err) {
@@ -46,38 +40,42 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your credentials</CardDescription>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-white p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">Smart AW Hospital</CardTitle>
+          <CardDescription className="text-center">Enter your credentials to login</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="Enter your email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full"
               />
             </div>
-            <div className="flex flex-col space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                placeholder="Enter your password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full"
               />
             </div>
-            {error && <p className="text-red-500 text-sm">{error}</p>} {/* Display error if any */}
-            <Button className="w-full mt-4" type="submit">Login</Button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <Button className="w-full" type="submit">
+              Login
+            </Button>
           </form>
         </CardContent>
       </Card>

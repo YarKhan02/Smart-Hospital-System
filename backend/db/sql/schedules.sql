@@ -6,4 +6,4 @@ SELECT
     schedules.appointment_start,
     schedules.appointment_end
 FROM public.doctors JOIN public.schedules ON doctors.uuid = schedules.doctor_uuid
-WHERE schedules.status = 'Available'
+WHERE schedules.status = 'Available' AND schedules.appointment_date >= CURRENT_DATE;
